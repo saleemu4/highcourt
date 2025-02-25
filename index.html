@@ -99,6 +99,35 @@
             </div>
         </div>
         
+        <!-- Header -->
+        <div class="header-container">
+            <div class="header-title">Kano State High Court</div>
+            
+            <div class="user-profile" id="user-profile">
+                <div class="profile-icon">A</div>
+                
+                <div class="user-dropdown" id="user-dropdown">
+                    <div class="dropdown-user-info">
+                        <div class="dropdown-user-name">Ibrahim Ahmed</div>
+                        <div class="dropdown-user-role">Court Administrator</div>
+                    </div>
+                    
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <a href="#" class="dropdown-link">
+                                <span class="dropdown-icon">👤</span> Profile
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="#" class="dropdown-link">
+                                <span class="dropdown-icon">🔒</span> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
         <!-- Main Content -->
         <div class="main-content">
             <!-- Dashboard Page -->
@@ -535,6 +564,25 @@
                     }
                 });
             }
+            
+            // User dropdown functionality
+            const userProfileButton = document.getElementById('user-profile');
+            const userDropdown = document.getElementById('user-dropdown');
+            
+            userProfileButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userDropdown.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                userDropdown.classList.remove('active');
+            });
+            
+            // Prevent dropdown from closing when clicking inside it
+            userDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
         });
     </script>
 </body>
