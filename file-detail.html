@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - File Detail</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .back-icon {
+            margin-right: 5px;
+        }
+        
+        .detail-header {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .file-id {
+            color: var(--dark-gray);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .file-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .file-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .status-registry {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #155724;
+        }
+        
+        .status-transit {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .status-judge {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #004085;
+        }
+        
+        .status-clerk {
+            background-color: rgba(111, 66, 193, 0.1);
+            color: #4b2882;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+        }
+        
+        .detail-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .detail-card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .activity-timeline {
+            position: relative;
+            margin: 30px 0;
+            padding-left: 30px;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--medium-gray);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-event {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-details {
+            font-size: 14px;
+            color: var(--dark-gray);
+            line-height: 1.5;
+        }
+        
+        .timeline-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-top: 10px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .meta-icon {
+            margin-right: 5px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-dot.current {
+            background-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--dark-gray);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d3d7dc;
+        }
+        
+        .tracking-map {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin: 30px 0 50px;
+        }
+        
+        .tracking-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 25px;
+            height: 4px;
+            background-color: var(--medium-gray);
+            z-index: 1;
+        }
+        
+        .tracking-progress {
+            position: absolute;
+            left: 0;
+            top: 25px;
+            height: 4px;
+            background-color: var(--success);
+            z-index: 2;
+            width: 50%; /* Will be dynamically set based on progress */
+        }
+        
+        .tracking-station {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .station-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .station-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .station-date {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+        
+        .station-completed .station-icon {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .station-current .station-icon {
+            background-color: white;
+            border-color: var(--success);
+            border-width: 3px;
+            color: var(--success);
+        }
+        
+        .station-pending .station-icon {
+            background-color: white;
+            border-color: var(--medium-gray);
+            color: var(--medium-gray);
+        }
+        
+        .file-info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .file-info-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            border: 1px solid var(--medium-gray);
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .tracking-url {
+            font-size: 12px;
+            color: var(--dark-gray);
+            word-break: break-all;
+            text-align: center;
+            max-width: 200px;
+        }
+        
+        .location-history {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .location-card {
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .location-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .location-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .location-label {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+        
+        .custodian-history {
+            margin-top: 20px;
+        }
+        
+        .custodian-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .custodian-table th {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid var(--medium-gray);
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+        
+        .custodian-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .custodian-table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Kano State</h2>
+                <p>High Court Management System</p>
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Court Administrator</div>
+                </div>
+            </div>
+            
+            <div class="menu">
+                <div class="menu-title">Main Menu</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="index.html" class="menu-link">
+                            <span class="menu-icon">📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="case-management.html" class="menu-link">
+                            <span class="menu-icon">📁</span> Case Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="e-filing.html" class="menu-link">
+                            <span class="menu-icon">📝</span> E-Filing
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="document-management.html" class="menu-link">
+                            <span class="menu-icon">📄</span> Document Management
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="file-tracking.html" class="menu-link">
+                            <span class="menu-icon">🔍</span> File Tracking
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📚</span> E-Library
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">Administration</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👥</span> User Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">⚙️</span> Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📊</span> Reports
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">My Account</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👤</span> Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔔</span> Notifications
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔒</span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <a href="file-tracking.html" class="back-btn">
+                <span class="back-icon">←</span> Back to File Tracking
+            </a>
+            
+            <!-- File Detail Header -->
+            <div class="detail-header">
+                <div class="file-id">File ID: FT-2024-0235</div>
+                <h1 class="file-title">State vs. Johnson</h1>
+                <div class="file-status status-judge">With Judge</div>
+                
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Current Location</div>
+                        <div class="detail-value">Judge's Chamber</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Custodian</div>
+                        <div class="detail-value">Hon. Abubakar Ibrahim</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Last Movement</div>
+                        <div class="detail-value">22 Feb 2024, 09:15 AM</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Registration Date</div>
+                        <div class="detail-value">15 Feb 2024</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="file-info-section">
+                <!-- File Information -->
+                <div class="detail-card">
+                    <h2 class="detail-card-title">File Information</h2>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Case Number</div>
+                            <div class="detail-value">KHC-2024-0235</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">File Type</div>
+                            <div class="detail-value">Case File</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Case Type</div>
+                            <div class="detail-value">Criminal</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Number of Volumes</div>
+                            <div class="detail-value">1</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Related Files</div>
+                            <div class="detail-value">2 (Evidence Files)</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Assigned Judge</div>
+                            <div class="detail-value">Hon. Abubakar Ibrahim</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Next Hearing</div>
+                            <div class="detail-value">28 Feb 2024</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Created By</div>
+                            <div class="detail-value">Amina Yusuf (Registry)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-container">
+                        <div class="qr-code">
+                            <img src="/api/placeholder/150/150" alt="File QR Code">
+                        </div>
+                        <div class="tracking-url">
+                            https://kano-highcourt.gov.ng/track/FT-2024-0235
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movement Statistics -->
+                <div class="detail-card">
+                    <h2 class="detail-card-title">Movement Statistics</h2>
+                    
+                    <h3 style="margin-bottom: 15px;">Location History</h3>
+                    <div class="location-history">
+                        <div class="location-card">
+                            <div class="location-name">Registry</div>
+                            <div class="location-count">1</div>
+                            <div class="location-label">visit</div>
+                        </div>
+                        <div class="location-card">
+                            <div class="location-name">Court Clerk</div>
+                            <div class="location-count">1</div>
+                            <div class="location-label">visit</div>
+                        </div>
+                        <div class="location-card">
+                            <div class="location-name">Judge's Chamber</div>
+                            <div class="location-count">1</div>
+                            <div class="location-label">visit</div>
+                        </div>
+                        <div class="location-card">
+                            <div class="location-name">In Transit</div>
+                            <div class="location-count">2</div>
+                            <div class="location-label">times</div>
+                        </div>
+                    </div>
+                    
+                    <div class="custodian-history">
+                        <h3 style="margin-bottom: 15px;">Custodian History</h3>
+                        <table class="custodian-table">
+                            <thead>
+                                <tr>
+                                    <th>Custodian</th>
+                                    <th>Role</th>
+                                    <th>Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Hon. Abubakar Ibrahim</td>
+                                    <td>Judge</td>
+                                    <td>Current (1 day)</td>
+                                </tr>
+                                <tr>
+                                    <td>Mohammed Ali</td>
+                                    <td>Court Clerk</td>
+                                    <td>4 days</td>
+                                </tr>
+                                <tr>
+                                    <td>Court Registry</td>
+                                    <td>Registry</td>
+                                    <td>3 days</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Current Location Tracking -->
+            <div class="detail-card">
+                <h2 class="detail-card-title">Current Location Tracking</h2>
+                
+                <div class="tracking-map">
+                    <div class="tracking-line"></div>
+                    <div class="tracking-progress" style="width: 50%;"></div>
+                    
+                    <div class="tracking-station station-completed">
+                        <div class="station-icon">📋</div>
+                        <div class="station-name">Registry</div>
+                        <div class="station-date">15 Feb 2024</div>
+                    </div>
+                    
+                    <div class="tracking-station station-completed">
+                        <div class="station-icon">👨‍💼</div>
+                        <div class="station-name">Court Clerk</div>
+                        <div class="station-date">18 Feb 2024</div>
+                    </div>
+                    
+                    <div class="tracking-station station-current">
+                        <div class="station-icon">⚖️</div>
+                        <div class="station-name">Judge's Chamber</div>
+                        <div class="station-date">22 Feb 2024</div>
+                    </div>
+                    
+                    <div class="tracking-station station-pending">
+                        <div class="station-icon">🗂️</div>
+                        <div class="station-name">Return to Registry</div>
+                        <div class="station-date">Pending</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Movement History Timeline -->
+            <div class="detail-card">
+                <h2 class="detail-card-title">Movement History</h2>
+                
+                <div class="activity-timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot current"></div>
+                        <div class="timeline-date">22 Feb 2024, 09:15 AM</div>
+                        <div class="timeline-event">File Received by Judge</div>
+                        <div class="timeline-details">File was received by Hon. Abubakar Ibrahim for hearing preparation. The file contained complete documentation and was verified by the judge's clerk.</div>
+                        <div class="timeline-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span> Received by: Hon. Abubakar Ibrahim
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">📍</span> Location: Judge's Chamber
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">22 Feb 2024, 08:40 AM</div>
+                        <div class="timeline-event">File in Transit</div>
+                        <div class="timeline-details">File was transferred from Court Clerk to Judge's Chamber. Transport handled by authorized court messenger, Usman Bala.</div>
+                        <div class="timeline-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span> Sent by: Mohammed Ali
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">🚚</span> Transported by: Usman Bala
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">18 Feb 2024, 02:30 PM</div>
+                        <div class="timeline-event">File Received by Court Clerk</div>
+                        <div class="timeline-details">File was received by Mohammed Ali (Court Clerk) for processing. The clerk reviewed the file and prepared it for the upcoming hearing.</div>
+                        <div class="timeline-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span> Received by: Mohammed Ali
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">📍</span> Location: Court Clerk Office
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">18 Feb 2024, 01:45 PM</div>
+                        <div class="timeline-event">File in Transit</div>
+                        <div class="timeline-details">File was transferred from Registry to Court Clerk. Transport handled by registry assistant, Fatima Hassan.</div>
+                        <div class="timeline-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span> Sent by: Amina Yusuf
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">🚚</span> Transported by: Fatima Hassan
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">15 Feb 2024, 10:30 AM</div>
+                        <div class="timeline-event">File Registered</div>
+                        <div class="timeline-details">File was registered in the system and assigned tracking number FT-2024-0235. Initial filing contained statement of claim and supporting documents.</div>
+                        <div class="timeline-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span> Registered by: Amina Yusuf
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">📍</span> Location: Court Registry
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-btns">
+                <button class="btn btn-secondary">Print History</button>
+                <button class="btn btn-primary" id="request-return-btn">Request Return</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileId = urlParams.get('id');
+            
+            // In a real application, we would use the fileId to fetch file details
+            console.log(`Loading file details for: ${fileId}`);
+            
+            // Request Return button
+            document.getElementById('request-return-btn').addEventListener('click', function() {
+                alert('Return request has been sent to the current custodian.');
+            });
+        });
+    </script>
+</body>
+</html>

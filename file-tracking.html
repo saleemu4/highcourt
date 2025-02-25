@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - File Tracking System</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .tracking-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .stat-count {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .icon-total { background-color: var(--primary); }
+        .icon-transit { background-color: var(--warning); }
+        .icon-returned { background-color: var(--success); }
+        .icon-pending { background-color: var(--danger); }
+        
+        .tracking-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 4px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-label {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .filter-select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            min-width: 120px;
+        }
+        
+        .search-file {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .search-file input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-file span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .register-btn {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .register-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .files-table-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .files-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .files-table th {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid var(--medium-gray);
+            color: var(--dark-gray);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .files-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+            vertical-align: middle;
+        }
+        
+        .files-table tr:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .file-id {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .file-title {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .location-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .location-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .location-registry {
+            background-color: #28a745;
+        }
+        
+        .location-judge {
+            background-color: #007bff;
+        }
+        
+        .location-clerk {
+            background-color: #6f42c1;
+        }
+        
+        .location-transit {
+            background-color: #ffc107;
+        }
+        
+        .track-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .status-registry {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #155724;
+        }
+        
+        .status-transit {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .status-judge {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #004085;
+        }
+        
+        .status-clerk {
+            background-color: rgba(111, 66, 193, 0.1);
+            color: #4b2882;
+        }
+        
+        .action-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--dark-gray);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .action-dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            align-items: center;
+        }
+        
+        .pagination-info {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+        
+        .page-btn {
+            background-color: white;
+            border: 1px solid var(--medium-gray);
+            padding: 6px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: var(--light-gray);
+        }
+        
+        .dropdown-select {
+            padding: 6px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+        }
+        
+        /* File History View */
+        .file-detail-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .file-detail-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .file-detail-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .file-detail-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+        }
+        
+        .tracking-timeline {
+            position: relative;
+            margin: 30px 0;
+            padding-left: 30px;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--medium-gray);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-event {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-details {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-dot.current {
+            background-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+        }
+        
+        /* Active Tracking UI */
+        .active-tracking {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .tracking-map {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin: 30px 0 50px;
+        }
+        
+        .tracking-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 25px;
+            height: 4px;
+            background-color: var(--medium-gray);
+            z-index: 1;
+        }
+        
+        .tracking-progress {
+            position: absolute;
+            left: 0;
+            top: 25px;
+            height: 4px;
+            background-color: var(--success);
+            z-index: 2;
+            width: 50%; /* Will be dynamically set based on progress */
+        }
+        
+        .tracking-station {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .station-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .station-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .station-date {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+        
+        .station-completed .station-icon {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .station-current .station-icon {
+            background-color: white;
+            border-color: var(--success);
+            border-width: 3px;
+            color: var(--success);
+        }
+        
+        .station-pending .station-icon {
+            background-color: white;
+            border-color: var(--medium-gray);
+            color: var(--medium-gray);
+        }
+        
+        /* File Registration Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-container {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-gray);
+            background: none;
+            border: none;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--dark-gray);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .hint-text {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .qr-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background-color: var(--light-gray);
+            border: 1px solid var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+        
+        .scan-link {
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--dark-gray);
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Kano State</h2>
+                <p>High Court Management System</p>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Court Administrator</div>
+                </div>
+            </div>
+            
+            <div class="menu">
+                <div class="menu-title">Main Menu</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="index.html" class="menu-link">
+                            <span class="menu-icon">📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="case-management.html" class="menu-link">
+                            <span class="menu-icon">📁</span> Case Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="e-filing.html" class="menu-link">
+                            <span class="menu-icon">📝</span> E-Filing
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="document-management.html" class="menu-link">
+                            <span class="menu-icon">📄</span> Document Management
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="file-tracking.html" class="menu-link">
+                            <span class="menu-icon">🔍</span> File Tracking
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📚</span> E-Library
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menu-title">Administration</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👥</span> User Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">⚙️</span> Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📊</span> Reports
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">My Account</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👤</span> Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔔</span> Notifications
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔒</span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>File Tracking System</h1>
+                <button class="register-btn" id="register-file-btn">
+                    <span class="btn-icon">📋</span> Register New File
+                </button>
+            </div>
+            
+            <!-- Tracking Stats -->
+            <div class="tracking-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Total Files</div>
+                        <div class="stat-icon icon-total">📁</div>
+                    </div>
+                    <div class="stat-count">953</div>
+                    <div class="stat-desc">Registered files</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">In Transit</div>
+                        <div class="stat-icon icon-transit">🚚</div>
+                    </div>
+                    <div class="stat-count">42</div>
+                    <div class="stat-desc">Currently moving</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">With Judges</div>
+                        <div class="stat-icon icon-judge">⚖️</div>
+                    </div>
+                    <div class="stat-count">124</div>
+                    <div class="stat-desc">Files with judges</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">File Requests</div>
+                        <div class="stat-icon icon-pending">⏳</div>
+                    </div>
+                    <div class="stat-count">17</div>
+                    <div class="stat-desc">Pending requests</div>
+                </div>
+            </div>
+            
+            <!-- Filters and Search -->
+            <div class="tracking-filters">
+                <div class="filter-group">
+                    <span class="filter-label">Location:</span>
+                    <select class="filter-select">
+                        <option value="all">All Locations</option>
+                        <option value="registry">Registry</option>
+                        <option value="judges">Judges Chambers</option>
+                        <option value="clerk">Court Clerk</option>
+                        <option value="transit">In Transit</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Case Type:</span>
+                    <select class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="civil">Civil</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="family">Family</option>
+                        <option value="probate">Probate</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Movement:</span>
+                    <select class="filter-select">
+                        <option value="all">All Activities</option>
+                        <option value="today">Today's Movements</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                
+                <div class="search-file">
+                    <input type="text" placeholder="Search by file ID or case title...">
+                    <span>🔍</span>
+                </div>
+            </div>
+            
+            <!-- Files Table -->
+            <div class="files-table-container">
+                <table class="files-table">
+                    <thead>
+                        <tr>
+                            <th>File ID</th>
+                            <th>Case Title</th>
+                            <th>Current Location</th>
+                            <th>Status</th>
+                            <th>Custodian</th>
+                            <th>Last Movement</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="file-id">FT-2024-0235</td>
+                            <td class="file-title">State vs. Johnson</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-judge"></span>
+                                    Judge's Chamber
+                                </div>
+                            </td>
+                            <td><span class="track-status status-judge">With Judge</span></td>
+                            <td>Hon. Abubakar Ibrahim</td>
+                            <td>22 Feb 2024, 09:15 AM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Request Return</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0228</td>
+                            <td class="file-title">Ahmed vs. Kano Electricity</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-transit"></span>
+                                    In Transit
+                                </div>
+                            </td>
+                            <td><span class="track-status status-transit">In Transit</span></td>
+                            <td>--</td>
+                            <td>23 Feb 2024, 11:30 AM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Receive File</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0219</td>
+                            <td class="file-title">Ibrahim Estate Settlement</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-registry"></span>
+                                    Registry
+                                </div>
+                            </td>
+                            <td><span class="track-status status-registry">In Registry</span></td>
+                            <td>Court Registry</td>
+                            <td>20 Feb 2024, 03:45 PM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Request File</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0215</td>
+                            <td class="file-title">State vs. Multiple Defendants</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-clerk"></span>
+                                    Court Clerk
+                                </div>
+                            </td>
+                            <td><span class="track-status status-clerk">With Clerk</span></td>
+                            <td>Mohammed Ali (Clerk)</td>
+                            <td>21 Feb 2024, 10:20 AM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Transfer File</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0209</td>
+                            <td class="file-title">Commercial Bank vs. Delta Ltd</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-judge"></span>
+                                    Judge's Chamber
+                                </div>
+                            </td>
+                            <td><span class="track-status status-judge">With Judge</span></td>
+                            <td>Hon. Fatima Garba</td>
+                            <td>19 Feb 2024, 02:15 PM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Request Return</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0198</td>
+                            <td class="file-title">John vs. Kano State Ministry of Health</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-registry"></span>
+                                    Registry
+                                </div>
+                            </td>
+                            <td><span class="track-status status-registry">In Registry</span></td>
+                            <td>Court Registry</td>
+                            <td>16 Feb 2024, 09:30 AM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Request File</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0182</td>
+                            <td class="file-title">Inheritance Dispute - Sani Family</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-registry"></span>
+                                    Registry
+                                </div>
+                            </td>
+                            <td><span class="track-status status-registry">In Registry</span></td>
+                            <td>Court Registry</td>
+                            <td>10 Feb 2024, 11:45 AM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Request File</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="file-id">FT-2024-0173</td>
+                            <td class="file-title">Alpha Construction vs. Kano Municipal</td>
+                            <td>
+                                <div class="location-indicator">
+                                    <span class="location-icon location-transit"></span>
+                                    In Transit
+                                </div>
+                            </td>
+                            <td><span class="track-status status-transit">In Transit</span></td>
+                            <td>--</td>
+                            <td>23 Feb 2024, 01:20 PM</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="file-detail.html?id=FT-2024-0235">View History</a>
+                                        <a href="#">Track Movement</a>
+                                        <a href="#">Receive File</a>
+                                        <a href="#">Print Tracking Sheet</a>
+                                        <a href="#">Report Issue</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing 1 to 8 of 953 files
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" disabled>Previous</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">Next</button>
+                    </div>
+                    <div>
+                        <select class="dropdown-select">
+                            <option value="10">10 per page</option>
+                            <option value="20">20 per page</option>
+                            <option value="50">50 per page</option>
+                            <option value="100">100 per page</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active Tracking Section -->
+            <div class="file-detail-card">
+                <div class="file-detail-header">
+                    <div class="file-detail-title">Active File Tracking</div>
+                    <button class="btn btn-primary" id="view-all-btn">View All Files</button>
+                </div>
+                
+                <div class="file-detail-info">
+                    <div class="detail-item">
+                        <div class="detail-label">File ID</div>
+                        <div class="detail-value">FT-2024-0235</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Case Title</div>
+                        <div class="detail-value">State vs. Johnson</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">With Judge</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Current Custodian</div>
+                        <div class="detail-value">Hon. Abubakar Ibrahim</div>
+                    </div>
+                </div>
+                
+                <div class="active-tracking">
+                    <div class="tracking-map">
+                        <div class="tracking-line"></div>
+                        <div class="tracking-progress" style="width: 50%;"></div>
+                        
+                        <div class="tracking-station station-completed">
+                            <div class="station-icon">📋</div>
+                            <div class="station-name">Registry</div>
+                            <div class="station-date">15 Feb 2024</div>
+                        </div>
+                        
+                        <div class="tracking-station station-completed">
+                            <div class="station-icon">👨‍💼</div>
+                            <div class="station-name">Court Clerk</div>
+                            <div class="station-date">18 Feb 2024</div>
+                        </div>
+                        
+                        <div class="tracking-station station-current">
+                            <div class="station-icon">⚖️</div>
+                            <div class="station-name">Judge's Chamber</div>
+                            <div class="station-date">22 Feb 2024</div>
+                        </div>
+                        
+                        <div class="tracking-station station-pending">
+                            <div class="station-icon">🗂️</div>
+                            <div class="station-name">Return to Registry</div>
+                            <div class="station-date">Pending</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- File History Timeline -->
+                <div class="tracking-timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot current"></div>
+                        <div class="timeline-date">22 Feb 2024, 09:15 AM</div>
+                        <div class="timeline-event">File Received by Judge</div>
+                        <div class="timeline-details">File was received by Hon. Abubakar Ibrahim for hearing preparation.</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">22 Feb 2024, 08:40 AM</div>
+                        <div class="timeline-event">File in Transit</div>
+                        <div class="timeline-details">File was transferred from Court Clerk to Judge's Chamber.</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">18 Feb 2024, 02:30 PM</div>
+                        <div class="timeline-event">File Received by Court Clerk</div>
+                        <div class="timeline-details">File was received by Mohammed Ali (Court Clerk) for processing.</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">18 Feb 2024, 01:45 PM</div>
+                        <div class="timeline-event">File in Transit</div>
+                        <div class="timeline-details">File was transferred from Registry to Court Clerk.</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">15 Feb 2024, 10:30 AM</div>
+                        <div class="timeline-event">File Registered</div>
+                        <div class="timeline-details">File was registered in the system and assigned tracking number FT-2024-0235.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Register File Modal -->
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">Register New File</div>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="case-number">Case Number</label>
+                    <input type="text" class="form-control" id="case-number" placeholder="e.g. KHC-2024-0235">
+                    <div class="hint-text">Enter the associated case number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="file-title">File Title</label>
+                    <input type="text" class="form-control" id="file-title" placeholder="Enter file title">
+                </div>
+                
+                <div class="form-group">
+                    <label for="file-type">File Type</label>
+                    <select class="form-control" id="file-type">
+                        <option value="">Select file type</option>
+                        <option value="case">Case File</option>
+                        <option value="exhibit">Exhibit File</option>
+                        <option value="evidence">Evidence File</option>
+                        <option value="admin">Administrative File</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="initial-location">Initial Location</label>
+                    <select class="form-control" id="initial-location">
+                        <option value="registry">Registry</option>
+                        <option value="clerk">Court Clerk</option>
+                        <option value="judge">Judge's Chamber</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="custodian">Initial Custodian</label>
+                    <input type="text" class="form-control" id="custodian" placeholder="Name of person or department">
+                </div>
+                
+                <div class="form-group">
+                    <label for="file-description">Description (Optional)</label>
+                    <textarea class="form-control" id="file-description" rows="3" placeholder="Enter file description"></textarea>
+                </div>
+                
+                <div class="qr-section">
+                    <div class="qr-code">
+                        QR Code will be<br>generated after<br>registration
+                    </div>
+                </div>
+                
+                <div class="scan-link">
+                    Tracking URL: https://kano-highcourt.gov.ng/track/FT-2024-XXXX
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-register">Cancel</button>
+                <button class="btn btn-primary" id="submit-register">Register File</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Register modal
+            const registerBtn = document.getElementById('register-file-btn');
+            const closeModalBtn = document.getElementById('close-modal');
+            const cancelRegisterBtn = document.getElementById('cancel-register');
+            const registerModal = document.getElementById('register-modal');
+            
+            registerBtn.addEventListener('click', function() {
+                registerModal.style.display = 'flex';
+            });
+            
+            function closeModal() {
+                registerModal.style.display = 'none';
+            }
+            
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelRegisterBtn.addEventListener('click', closeModal);
+            
+            // Close when clicking outside
+            registerModal.addEventListener('click', function(e) {
+                if (e.target === registerModal) {
+                    closeModal();
+                }
+            });
+            
+            // Register file
+            document.getElementById('submit-register').addEventListener('click', function() {
+                alert('File registered successfully!');
+                closeModal();
+            });
+            
+            // Filter functionality
+            document.querySelectorAll('.filter-select').forEach(filter => {
+                filter.addEventListener('change', function() {
+                    console.log(`Filter changed: ${this.previousElementSibling.textContent} = ${this.value}`);
+                    // In a real application, this would trigger data filtering
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-file input');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    console.log(`Searching for: ${this.value}`);
+                    // In a real application, this would trigger search
+                }
+            });
+            
+            // View All Files button
+            document.getElementById('view-all-btn').addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
