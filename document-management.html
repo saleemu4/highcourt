@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - Document Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .document-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .stat-count {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .icon-all { background-color: var(--primary); }
+        .icon-pdf { background-color: #e74c3c; }
+        .icon-word { background-color: #3498db; }
+        .icon-image { background-color: #9b59b6; }
+        
+        .documents-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 4px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-label {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .filter-select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            min-width: 120px;
+        }
+        
+        .search-document {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .search-document input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-document span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .document-layout-btns {
+            display: flex;
+            gap: 5px;
+            background-color: white;
+            border-radius: 4px;
+            padding: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .layout-btn {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+        
+        .layout-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .upload-btn {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .upload-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        /* Document Table View */
+        .documents-table-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow-x: auto;
+            display: block;
+        }
+        
+        .documents-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .documents-table th {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid var(--medium-gray);
+            color: var(--dark-gray);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .documents-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+            vertical-align: middle;
+        }
+        
+        .documents-table tr:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .document-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .document-icon {
+            font-size: 20px;
+        }
+        
+        .document-title {
+            font-weight: bold;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .document-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .status-approved {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #155724;
+        }
+        
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .status-rejected {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+        
+        .document-case {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .action-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--dark-gray);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .action-dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Grid View */
+        .documents-grid-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        
+        .document-card {
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .document-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .document-preview {
+            height: 160px;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            font-size: 40px;
+        }
+        
+        .document-info {
+            padding: 15px;
+        }
+        
+        .document-card-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .document-meta {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+        
+        .document-case-link {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .doc-action-btn {
+            flex: 1;
+            border: none;
+            background-color: var(--light-gray);
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .doc-action-btn:hover {
+            background-color: var(--medium-gray);
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            align-items: center;
+        }
+        
+        .pagination-info {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+        
+        .page-btn {
+            background-color: white;
+            border: 1px solid var(--medium-gray);
+            padding: 6px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: var(--light-gray);
+        }
+        
+        .dropdown-select {
+            padding: 6px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+        }
+        
+        /* File Upload Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-container {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-gray);
+            background: none;
+            border: none;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--medium-gray);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(26, 60, 110, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--dark-gray);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Kano State</h2>
+                <p>High Court Management System</p>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Court Administrator</div>
+                </div>
+            </div>
+            
+            <div class="menu">
+                <div class="menu-title">Main Menu</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="index.html" class="menu-link">
+                            <span class="menu-icon">📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="case-management.html" class="menu-link">
+                            <span class="menu-icon">📁</span> Case Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="e-filing.html" class="menu-link">
+                            <span class="menu-icon">📝</span> E-Filing
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="document-management.html" class="menu-link">
+                            <span class="menu-icon">📄</span> Document Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔍</span> File Tracking
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📚</span> E-Library
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">Administration</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👥</span> User Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">⚙️</span> Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📊</span> Reports
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">My Account</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👤</span> Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔔</span> Notifications
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔒</span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>Document Management</h1>
+                <button class="upload-btn" id="upload-document-btn">
+                    <span class="btn-icon">📤</span> Upload Document
+                </button>
+            </div>
+            
+            <!-- Document Stats -->
+            <div class="document-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">All Documents</div>
+                        <div class="stat-icon icon-all">📄</div>
+                    </div>
+                    <div class="stat-count">128</div>
+                    <div class="stat-desc">Total documents</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">PDF Documents</div>
+                        <div class="stat-icon icon-pdf">📕</div>
+                    </div>
+                    <div class="stat-count">85</div>
+                    <div class="stat-desc">PDF files</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Word Documents</div>
+                        <div class="stat-icon icon-word">📘</div>
+                    </div>
+                    <div class="stat-count">32</div>
+                    <div class="stat-desc">DOC/DOCX files</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Images</div>
+                        <div class="stat-icon icon-image">🖼️</div>
+                    </div>
+                    <div class="stat-count">11</div>
+                    <div class="stat-desc">JPG/PNG files</div>
+                </div>
+            </div>
+            
+            <!-- Filters and Search -->
+            <div class="documents-filters">
+                <div class="filter-group">
+                    <span class="filter-label">Type:</span>
+                    <select class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="pdf">PDF</option>
+                        <option value="word">Word</option>
+                        <option value="image">Image</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Case:</span>
+                    <select class="filter-select">
+                        <option value="all">All Cases</option>
+                        <option value="KHC-2024-0235">State vs. Johnson</option>
+                        <option value="KHC-2024-0228">Ahmed vs. Kano Electricity</option>
+                        <option value="KHC-2024-0219">Ibrahim Estate Settlement</option>
+                        <option value="KHC-2024-0215">State vs. Multiple Defendants</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Status:</span>
+                    <select class="filter-select">
+                        <option value="all">All Statuses</option>
+                        <option value="approved">Approved</option>
+                        <option value="pending">Pending</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                
+                <div class="search-document">
+                    <input type="text" placeholder="Search documents...">
+                    <span>🔍</span>
+                </div>
+                
+                <div class="document-layout-btns">
+                    <button class="layout-btn active" id="table-view-btn">📋</button>
+                    <button class="layout-btn" id="grid-view-btn">📑</button>
+                </div>
+            </div>
+            
+            <!-- Documents Table View -->
+            <div class="documents-table-container" id="table-view">
+                <table class="documents-table">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Case</th>
+                            <th>Uploaded On</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📕</span>
+                                    <span class="document-title">Statement of Claim.pdf</span>
+                                </div>
+                            </td>
+                            <td>PDF</td>
+                            <td>2.4 MB</td>
+                            <td class="document-case">State vs. Johnson</td>
+                            <td>15 Feb 2024</td>
+                            <td><span class="document-status status-approved">Approved</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📕</span>
+                                    <span class="document-title">Contract Agreement.pdf</span>
+                                </div>
+                            </td>
+                            <td>PDF</td>
+                            <td>1.2 MB</td>
+                            <td class="document-case">Ahmed vs. Kano Electricity</td>
+                            <td>12 Feb 2024</td>
+                            <td><span class="document-status status-approved">Approved</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">🖼️</span>
+                                    <span class="document-title">Photo Evidence.jpg</span>
+                                </div>
+                            </td>
+                            <td>Image</td>
+                            <td>3.5 MB</td>
+                            <td class="document-case">Ahmed vs. Kano Electricity</td>
+                            <td>12 Feb 2024</td>
+                            <td><span class="document-status status-approved">Approved</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📘</span>
+                                    <span class="document-title">Defense Statement.docx</span>
+                                </div>
+                            </td>
+                            <td>Word</td>
+                            <td>852 KB</td>
+                            <td class="document-case">State vs. Johnson</td>
+                            <td>16 Feb 2024</td>
+                            <td><span class="document-status status-pending">Pending</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📕</span>
+                                    <span class="document-title">Financial Audit Report.pdf</span>
+                                </div>
+                            </td>
+                            <td>PDF</td>
+                            <td>4.3 MB</td>
+                            <td class="document-case">State vs. Johnson</td>
+                            <td>15 Feb 2024</td>
+                            <td><span class="document-status status-approved">Approved</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📕</span>
+                                    <span class="document-title">Bank Statements.pdf</span>
+                                </div>
+                            </td>
+                            <td>PDF</td>
+                            <td>6.7 MB</td>
+                            <td class="document-case">State vs. Johnson</td>
+                            <td>15 Feb 2024</td>
+                            <td><span class="document-status status-approved">Approved</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📘</span>
+                                    <span class="document-title">Witness Statement - Aliyu Usman.docx</span>
+                                </div>
+                            </td>
+                            <td>Word</td>
+                            <td>625 KB</td>
+                            <td class="document-case">State vs. Johnson</td>
+                            <td>18 Feb 2024</td>
+                            <td><span class="document-status status-pending">Pending</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="document-name">
+                                    <span class="document-icon">📘</span>
+                                    <span class="document-title">Witness Statement - Fatima Yusuf.docx</span>
+                                </div>
+                            </td>
+                            <td>Word</td>
+                            <td>589 KB</td>
+                            <td class="document-case">State vs. Johnson</td>
+                            <td>18 Feb 2024</td>
+                            <td><span class="document-status status-pending">Pending</span></td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Document</a>
+                                        <a href="#">Download</a>
+                                        <a href="#">Rename</a>
+                                        <a href="#">Version History</a>
+                                        <a href="#">Share</a>
+                                        <a href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing 1 to 8 of 128 documents
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" disabled>Previous</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">Next</button>
+                    </div>
+                    <div>
+                        <select class="dropdown-select">
+                            <option value="10">10 per page</option>
+                            <option value="20">20 per page</option>
+                            <option value="50">50 per page</option>
+                            <option value="100">100 per page</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documents Grid View -->
+            <div class="documents-grid-container" id="grid-view">
+                <div class="documents-grid">
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📕
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Statement of Claim.pdf</div>
+                            <div class="document-meta">PDF • 2.4 MB • 15 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: State vs. Johnson</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📕
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Contract Agreement.pdf</div>
+                            <div class="document-meta">PDF • 1.2 MB • 12 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: Ahmed vs. Kano Electricity</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            🖼️
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Photo Evidence.jpg</div>
+                            <div class="document-meta">Image • 3.5 MB • 12 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: Ahmed vs. Kano Electricity</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📘
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Defense Statement.docx</div>
+                            <div class="document-meta">Word • 852 KB • 16 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: State vs. Johnson</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📕
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Financial Audit Report.pdf</div>
+                            <div class="document-meta">PDF • 4.3 MB • 15 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: State vs. Johnson</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📕
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Bank Statements.pdf</div>
+                            <div class="document-meta">PDF • 6.7 MB • 15 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: State vs. Johnson</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📘
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Witness Statement - Aliyu Usman.docx</div>
+                            <div class="document-meta">Word • 625 KB • 18 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: State vs. Johnson</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="document-card">
+                        <div class="document-preview">
+                            📘
+                        </div>
+                        <div class="document-info">
+                            <div class="document-card-title">Witness Statement - Fatima Yusuf.docx</div>
+                            <div class="document-meta">Word • 589 KB • 18 Feb 2024</div>
+                            <a href="#" class="document-case-link">Case: State vs. Johnson</a>
+                            <div class="document-actions">
+                                <button class="doc-action-btn">View</button>
+                                <button class="doc-action-btn">Download</button>
+                                <button class="doc-action-btn">More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing 1 to 8 of 128 documents
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" disabled>Previous</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">Next</button>
+                    </div>
+                    <div>
+                        <select class="dropdown-select">
+                            <option value="10">10 per page</option>
+                            <option value="20">20 per page</option>
+                            <option value="50">50 per page</option>
+                            <option value="100">100 per page</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Document Modal -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">Upload Document</div>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-icon">📤</div>
+                    <div class="upload-text">Drag and drop files here or click to browse</div>
+                    <input type="file" id="file-input" style="display: none" multiple>
+                    <div class="upload-hint">Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 20MB)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="document-title">Document Title</label>
+                    <input type="text" class="form-control" id="document-title" placeholder="Enter document title">
+                </div>
+                
+                <div class="form-group">
+                    <label for="related-case">Related Case</label>
+                    <select class="form-control" id="related-case">
+                        <option value="">Select a case</option>
+                        <option value="KHC-2024-0235">State vs. Johnson</option>
+                        <option value="KHC-2024-0228">Ahmed vs. Kano Electricity</option>
+                        <option value="KHC-2024-0219">Ibrahim Estate Settlement</option>
+                        <option value="KHC-2024-0215">State vs. Multiple Defendants</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="document-type">Document Type</label>
+                    <select class="form-control" id="document-type">
+                        <option value="">Select document type</option>
+                        <option value="statement">Statement of Claim/Defense</option>
+                        <option value="exhibit">Exhibit/Evidence</option>
+                        <option value="motion">Motion/Application</option>
+                        <option value="order">Court Order</option>
+                        <option value="judgment">Judgment</option>
+                        <option value="affidavit">Affidavit</option>
+                        <option value="witness">Witness Statement</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="document-description">Description (Optional)</label>
+                    <textarea class="form-control" id="document-description" rows="3" placeholder="Enter a brief description of this document"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-upload">Cancel</button>
+                <button class="btn btn-primary" id="submit-upload">Upload Document</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Layout toggle
+            const tableViewBtn = document.getElementById('table-view-btn');
+            const gridViewBtn = document.getElementById('grid-view-btn');
+            const tableView = document.getElementById('table-view');
+            const gridView = document.getElementById('grid-view');
+            
+            tableViewBtn.addEventListener('click', function() {
+                tableViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                tableView.style.display = 'block';
+                gridView.style.display = 'none';
+            });
+            
+            gridViewBtn.addEventListener('click', function() {
+                gridViewBtn.classList.add('active');
+                tableViewBtn.classList.remove('active');
+                gridView.style.display = 'block';
+                tableView.style.display = 'none';
+            });
+            
+            // Upload modal
+            const uploadBtn = document.getElementById('upload-document-btn');
+            const closeModalBtn = document.getElementById('close-modal');
+            const cancelUploadBtn = document.getElementById('cancel-upload');
+            const uploadModal = document.getElementById('upload-modal');
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+            
+            uploadBtn.addEventListener('click', function() {
+                uploadModal.style.display = 'flex';
+            });
+            
+            function closeModal() {
+                uploadModal.style.display = 'none';
+            }
+            
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelUploadBtn.addEventListener('click', closeModal);
+            
+            // Close when clicking outside
+            uploadModal.addEventListener('click', function(e) {
+                if (e.target === uploadModal) {
+                    closeModal();
+                }
+            });
+            
+            // File drop functionality
+            dropArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    console.log(`Selected ${this.files.length} files`);
+                    // In a real application, you would show selected files and handle them
+                }
+            });
+            
+            // Drag and drop events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('highlight');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    console.log(`Dropped ${files.length} files`);
+                    // In a real application, you would show dropped files and handle them
+                }
+            }
+            
+            // Submit upload
+            document.getElementById('submit-upload').addEventListener('click', function() {
+                // In a real application, this would upload the files to the server
+                alert('Documents uploaded successfully!');
+                closeModal();
+            });
+            
+            // Filter functionality
+            document.querySelectorAll('.filter-select').forEach(filter => {
+                filter.addEventListener('change', function() {
+                    console.log(`Filter changed: ${this.previousElementSibling.textContent} = ${this.value}`);
+                    // In a real application, this would trigger data filtering
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-document input');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    console.log(`Searching for: ${this.value}`);
+                    // In a real application, this would trigger search
+                }
+            });
+        });
+    </script>
+</body>
+</html>

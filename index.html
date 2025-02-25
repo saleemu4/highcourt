@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Kano State</h2>
+                <p>High Court Management System</p>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Court Administrator</div>
+                </div>
+            </div>
+            
+            <div class="menu">
+                <div class="menu-title">Main Menu</div>
+                <ul class="menu-items">
+                    <li class="menu-item active">
+                        <a href="index.html" class="menu-link">
+                            <span class="menu-icon">📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="case-management.html" class="menu-link">
+                            <span class="menu-icon">📁</span> Case Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="e-filing.html" class="menu-link">
+                            <span class="menu-icon">📝</span> E-Filing
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="document-management.html" class="menu-link">
+                            <span class="menu-icon">📄</span> Document Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔍</span> File Tracking
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📚</span> E-Library
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">Administration</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👥</span> User Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">⚙️</span> Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📊</span> Reports
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">My Account</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👤</span> Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔔</span> Notifications <span class="draft-badge">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔒</span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <div class="page active">
+                <div class="header">
+                    <h1>Dashboard Overview</h1>
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="Search cases, documents, files...">
+                        <span>🔍</span>
+                    </div>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Active Cases</div>
+                            <div class="stat-icon" style="background-color: var(--primary);">📊</div>
+                        </div>
+                        <div class="stat-value">1,248</div>
+                        <div class="stat-desc">
+                            From last month
+                            <span class="stat-trend trend-up">
+                                ↑ 12.5%
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">E-Filed Documents</div>
+                            <div class="stat-icon" style="background-color: var(--secondary);">📝</div>
+                        </div>
+                        <div class="stat-value">5,842</div>
+                        <div class="stat-desc">
+                            From last month
+                            <span class="stat-trend trend-up">
+                                ↑ 18.3%
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Pending Hearings</div>
+                            <div class="stat-icon" style="background-color: var(--warning);">⏱️</div>
+                        </div>
+                        <div class="stat-value">328</div>
+                        <div class="stat-desc">
+                            From last month
+                            <span class="stat-trend trend-down">
+                                ↓ 5.2%
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Documents Tracked</div>
+                            <div class="stat-icon" style="background-color: var(--info);">🔍</div>
+                        </div>
+                        <div class="stat-value">9,254</div>
+                        <div class="stat-desc">
+                            From last month
+                            <span class="stat-trend trend-up">
+                                ↑ 9.7%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">Case Load Analysis</div>
+                            <div class="chart-period">Jan - Dec 2024</div>
+                        </div>
+                        <div class="chart-content">
+                            <canvas id="caseLoadChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">Case Distribution</div>
+                            <div class="chart-period">Current Period</div>
+                        </div>
+                        <div class="chart-content">
+                            <canvas id="caseDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Charts Row -->
+                <div class="chart-row">
+                    <div class="small-chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">Document Upload Trends</div>
+                            <div class="chart-period">Last 6 Months</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="docUploadChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="small-chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">Case Resolution Rate</div>
+                            <div class="chart-period">By Case Type</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="resolutionRateChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Cases Table -->
+                <div class="case-table-container">
+                    <div class="section-header">
+                        <div class="section-title">Recent Cases</div>
+                        <a href="case-management.html" class="view-all">View All Cases</a>
+                    </div>
+                    
+                    <table class="case-table">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Title</th>
+                                <th>Filed Date</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="case-id">KHC-2024-0235</td>
+                                <td>State vs. Johnson</td>
+                                <td>15 Feb 2024</td>
+                                <td>Criminal</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="case-id">KHC-2024-0228</td>
+                                <td>Ahmed vs. Kano Electricity</td>
+                                <td>12 Feb 2024</td>
+                                <td>Civil</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="case-id">KHC-2024-0219</td>
+                                <td>Ibrahim Estate Settlement</td>
+                                <td>08 Feb 2024</td>
+                                <td>Probate</td>
+                                <td><span class="status-badge status-closed">Closed</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="case-id">KHC-2024-0215</td>
+                                <td>State vs. Multiple Defendants</td>
+                                <td>05 Feb 2024</td>
+                                <td>Criminal</td>
+                                <td><span class="status-badge status-urgent">Urgent</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="case-id">KHC-2024-0209</td>
+                                <td>Commercial Bank vs. Delta Ltd</td>
+                                <td>01 Feb 2024</td>
+                                <td>Commercial</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Modules Section -->
+                <h2 style="color: var(--primary); margin-bottom: 20px;">System Modules</h2>
+                <div class="modules-container">
+                    <div class="module-card" onclick="window.location.href='case-management.html'">
+                        <div class="module-icon" style="background-color: var(--primary);">📁</div>
+                        <div class="module-title">Case Management</div>
+                        <div class="module-desc">
+                            Comprehensive case lifecycle management from filing to disposition. Track history, schedules, and outcomes.
+                        </div>
+                        <div class="module-stats">
+                            <div class="module-stat">
+                                <div class="stat-number">1,248</div>
+                                <div class="stat-label">Active Cases</div>
+                            </div>
+                            <div class="module-stat">
+                                <div class="stat-number">367</div>
+                                <div class="stat-label">This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-icon" style="background-color: var(--secondary);">📝</div>
+                        <div class="module-title">E-Filing</div>
+                        <div class="module-desc">
+                            Digital submission system for court documents. Submit, validate, and process legal filings electronically.
+                        </div>
+                        <div class="module-stats">
+                            <div class="module-stat">
+                                <div class="stat-number">5,842</div>
+                                <div class="stat-label">Documents</div>
+                            </div>
+                            <div class="module-stat">
+                                <div class="stat-number">843</div>
+                                <div class="stat-label">This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-icon" style="background-color: var(--info);">📄</div>
+                        <div class="module-title">Document Management</div>
+                        <div class="module-desc">
+                            Secure digital repository for all court documents with version control and access permissions.
+                        </div>
+                        <div class="module-stats">
+                            <div class="module-stat">
+                                <div class="stat-number">15,724</div>
+                                <div class="stat-label">Files</div>
+                            </div>
+                            <div class="module-stat">
+                                <div class="stat-number">98.7%</div>
+                                <div class="stat-label">Digitized</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-icon" style="background-color: var(--warning);">🔍</div>
+                        <div class="module-title">File Tracking</div>
+                        <div class="module-desc">
+                            Real-time tracking for physical documents and files throughout the court system.
+                        </div>
+                        <div class="module-stats">
+                            <div class="module-stat">
+                                <div class="stat-number">9,254</div>
+                                <div class="stat-label">Tracked</div>
+                            </div>
+                            <div class="module-stat">
+                                <div class="stat-number">342</div>
+                                <div class="stat-label">In Transit</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-icon" style="background-color: var(--danger);">📚</div>
+                        <div class="module-title">E-Library</div>
+                        <div class="module-desc">
+                            Digital repository of legal references, precedents, and law reports for research.
+                        </div>
+                        <div class="module-stats">
+                            <div class="module-stat">
+                                <div class="stat-number">12,450</div>
+                                <div class="stat-label">Resources</div>
+                            </div>
+                            <div class="module-stat">
+                                <div class="stat-number">1,285</div>
+                                <div class="stat-label">Precedents</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Charts
+            initCharts();
+            
+            // Initialize Charts Function
+            function initCharts() {
+                // Case Load Bar Chart
+                const caseLoadCtx = document.getElementById('caseLoadChart').getContext('2d');
+                const caseLoadChart = new Chart(caseLoadCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        datasets: [
+                            {
+                                label: 'New Cases',
+                                data: [125, 145, 136, 152, 168, 178, 165, 172, 185, 192, 183, 178],
+                                backgroundColor: 'rgba(26, 60, 110, 0.7)',
+                                borderColor: 'rgba(26, 60, 110, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Resolved Cases',
+                                data: [98, 112, 125, 132, 145, 156, 148, 160, 172, 168, 172, 165],
+                                backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                                borderColor: 'rgba(40, 167, 69, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Cases'
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Case Distribution Pie Chart
+                const caseDistributionCtx = document.getElementById('caseDistributionChart').getContext('2d');
+                const caseDistributionChart = new Chart(caseDistributionCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Civil', 'Criminal', 'Commercial', 'Probate', 'Administrative'],
+                        datasets: [{
+                            data: [42, 28, 15, 8, 7],
+                            backgroundColor: [
+                                'rgba(26, 60, 110, 0.7)',
+                                'rgba(220, 53, 69, 0.7)',
+                                'rgba(40, 167, 69, 0.7)',
+                                'rgba(23, 162, 184, 0.7)',
+                                'rgba(255, 193, 7, 0.7)'
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+                
+                // Document Upload Trends
+                const docUploadCtx = document.getElementById('docUploadChart').getContext('2d');
+                const docUploadChart = new Chart(docUploadCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+                        datasets: [{
+                            label: 'Uploaded Documents',
+                            data: [843, 925, 1054, 1128, 1232, 1345],
+                            backgroundColor: 'rgba(23, 162, 184, 0.2)',
+                            borderColor: 'rgba(23, 162, 184, 1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                // Case Resolution Rate
+                const resolutionRateCtx = document.getElementById('resolutionRateChart').getContext('2d');
+                const resolutionRateChart = new Chart(resolutionRateCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Civil', 'Criminal', 'Commercial', 'Probate', 'Admin'],
+                        datasets: [{
+                            label: 'Resolution Rate (%)',
+                            data: [78, 65, 82, 88, 72],
+                            backgroundColor: [
+                                'rgba(26, 60, 110, 0.7)',
+                                'rgba(220, 53, 69, 0.7)',
+                                'rgba(40, 167, 69, 0.7)',
+                                'rgba(23, 162, 184, 0.7)',
+                                'rgba(255, 193, 7, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(26, 60, 110, 1)',
+                                'rgba(220, 53, 69, 1)',
+                                'rgba(40, 167, 69, 1)',
+                                'rgba(23, 162, 184, 1)',
+                                'rgba(255, 193, 7, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Percentage (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

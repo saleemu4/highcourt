@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - E-Filing Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filing-status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .status-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .status-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .status-title {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .status-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .status-count {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .status-draft { background-color: #6c757d; }
+        .status-pending { background-color: #ffc107; }
+        .status-active { background-color: #17a2b8; }
+        .status-completed { background-color: #28a745; }
+        
+        .filing-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 4px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-label {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .filter-select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            min-width: 120px;
+        }
+        
+        .search-filing {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .search-filing input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-filing span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .filings-table-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .filings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .filings-table th {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid var(--medium-gray);
+            color: var(--dark-gray);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .filings-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+            vertical-align: middle;
+        }
+        
+        .filings-table tr:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .filing-id {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .filing-title {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .filing-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .status-draft-pill {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+        
+        .status-pending-pill {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .status-active-pill {
+            background-color: rgba(23, 162, 184, 0.1);
+            color: #0c5460;
+        }
+        
+        .status-completed-pill {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #155724;
+        }
+        
+        .action-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--dark-gray);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .action-dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .new-filing-btn {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .new-filing-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .draft-badge {
+            background-color: #6c757d;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            align-items: center;
+        }
+        
+        .pagination-info {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+        
+        .page-btn {
+            background-color: white;
+            border: 1px solid var(--medium-gray);
+            padding: 6px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: var(--light-gray);
+        }
+        
+        .dropdown-select {
+            padding: 6px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Kano State</h2>
+                <p>High Court Management System</p>
+            </div>
+            
+            
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Court Administrator</div>
+                </div>
+            </div>
+            
+            <div class="menu">
+                <div class="menu-title">Main Menu</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="index.html" class="menu-link">
+                            <span class="menu-icon">📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="case-management.html" class="menu-link">
+                            <span class="menu-icon">📁</span> Case Management
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="e-filing.html" class="menu-link">
+                            <span class="menu-icon">📝</span> E-Filing
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="document-management.html" class="menu-link">
+                            <span class="menu-icon">📄</span> Document Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔍</span> File Tracking
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📚</span> E-Library
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">Administration</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👥</span> User Management
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">⚙️</span> Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📊</span> Reports
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">My Account</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👤</span> Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔔</span> Notifications <span class="draft-badge">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔒</span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>E-Filing</h1>
+                <a href="file-case.html" class="new-filing-btn">
+                    <span class="btn-icon">+</span> Create New Filing
+                </a>
+            </div>
+            
+            <!-- Status Cards -->
+            <div class="filing-status-cards">
+                <div class="status-card">
+                    <div class="status-card-header">
+                        <div class="status-title">Draft Filings</div>
+                        <div class="status-icon status-draft">📋</div>
+                    </div>
+                    <div class="status-count">3</div>
+                    <div class="status-desc">Incomplete filings</div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-card-header">
+                        <div class="status-title">Pending Approval</div>
+                        <div class="status-icon status-pending">⏳</div>
+                    </div>
+                    <div class="status-count">2</div>
+                    <div class="status-desc">Awaiting court review</div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-card-header">
+                        <div class="status-title">Active Cases</div>
+                        <div class="status-icon status-active">⚖️</div>
+                    </div>
+                    <div class="status-count">5</div>
+                    <div class="status-desc">Currently in progress</div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-card-header">
+                        <div class="status-title">Completed</div>
+                        <div class="status-icon status-completed">✅</div>
+                    </div>
+                    <div class="status-count">8</div>
+                    <div class="status-desc">Finalized cases</div>
+                </div>
+            </div>
+            
+            <!-- Filters and Search -->
+            <div class="filing-filters">
+                <div class="filter-group">
+                    <span class="filter-label">Status:</span>
+                    <select class="filter-select">
+                        <option value="all">All Statuses</option>
+                        <option value="draft">Draft</option>
+                        <option value="pending">Pending Approval</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Case Type:</span>
+                    <select class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="civil">Civil</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="family">Family</option>
+                        <option value="probate">Probate</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Date:</span>
+                    <select class="filter-select">
+                        <option value="all">All Time</option>
+                        <option value="this-month">This Month</option>
+                        <option value="last-month">Last Month</option>
+                        <option value="this-year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                
+                <div class="search-filing">
+                    <input type="text" placeholder="Search by case title, number or parties...">
+                    <span>🔍</span>
+                </div>
+            </div>
+            
+            <!-- Filings Table -->
+            <div class="filings-table-container">
+                <table class="filings-table">
+                    <thead>
+                        <tr>
+                            <th>Reference No.</th>
+                            <th>Case Title</th>
+                            <th>Type</th>
+                            <th>Filed Date</th>
+                            <th>Status</th>
+                            <th>Next Step</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="filing-id">KHC-REF-2024-00158</td>
+                            <td class="filing-title">John Doe vs. ABC Corporation</td>
+                            <td>Civil</td>
+                            <td>15 Feb 2024</td>
+                            <td><span class="filing-status status-active-pill">Active</span></td>
+                            <td>Hearing on 28 Feb 2024</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="view-case.html?id=KHC-REF-2024-00158">View Details</a>
+                                        <a href="#">Track Status</a>
+                                        <a href="#">Upload Documents</a>
+                                        <a href="#">Download Receipt</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-2024-00152</td>
+                            <td class="filing-title">Ibrahim Ahmed vs. XYZ Limited</td>
+                            <td>Commercial</td>
+                            <td>12 Feb 2024</td>
+                            <td><span class="filing-status status-pending-pill">Pending</span></td>
+                            <td>Court Review</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Details</a>
+                                        <a href="#">Track Status</a>
+                                        <a href="#">Upload Documents</a>
+                                        <a href="#">Download Receipt</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-2024-00145</td>
+                            <td class="filing-title">State vs. James Johnson</td>
+                            <td>Criminal</td>
+                            <td>05 Feb 2024</td>
+                            <td><span class="filing-status status-active-pill">Active</span></td>
+                            <td>Hearing on 22 Feb 2024</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Details</a>
+                                        <a href="#">Track Status</a>
+                                        <a href="#">Upload Documents</a>
+                                        <a href="#">Download Receipt</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-2024-00138</td>
+                            <td class="filing-title">Inheritance Dispute - Sani Family</td>
+                            <td>Probate</td>
+                            <td>28 Jan 2024</td>
+                            <td><span class="filing-status status-completed-pill">Completed</span></td>
+                            <td>Case Closed</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Details</a>
+                                        <a href="#">Download Case Files</a>
+                                        <a href="#">Print Summary</a>
+                                        <a href="#">Download Receipt</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-2024-00123</td>
+                            <td class="filing-title">Marriage Dissolution - Ahmed & Fatima</td>
+                            <td>Family</td>
+                            <td>18 Jan 2024</td>
+                            <td><span class="filing-status status-completed-pill">Completed</span></td>
+                            <td>Case Closed</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Details</a>
+                                        <a href="#">Download Case Files</a>
+                                        <a href="#">Print Summary</a>
+                                        <a href="#">Download Receipt</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-DRAFT-00037</td>
+                            <td class="filing-title">Property Dispute - Usman Property</td>
+                            <td>Civil</td>
+                            <td>--</td>
+                            <td><span class="filing-status status-draft-pill">Draft</span></td>
+                            <td>Complete Filing</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">Continue Editing</a>
+                                        <a href="#">Delete Draft</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-DRAFT-00036</td>
+                            <td class="filing-title">Contract Breach - Delta Construction</td>
+                            <td>Commercial</td>
+                            <td>--</td>
+                            <td><span class="filing-status status-draft-pill">Draft</span></td>
+                            <td>Complete Filing</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">Continue Editing</a>
+                                        <a href="#">Delete Draft</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="filing-id">KHC-REF-2024-00115</td>
+                            <td class="filing-title">Alpha Bank vs. Beta Enterprises</td>
+                            <td>Commercial</td>
+                            <td>10 Jan 2024</td>
+                            <td><span class="filing-status status-active-pill">Active</span></td>
+                            <td>Hearing on 05 Mar 2024</td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">View Details</a>
+                                        <a href="#">Track Status</a>
+                                        <a href="#">Upload Documents</a>
+                                        <a href="#">Download Receipt</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing 1 to 8 of 18 entries
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" disabled>Previous</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">Next</button>
+                    </div>
+                    <div>
+                        <select class="dropdown-select">
+                            <option value="10">10 per page</option>
+                            <option value="20">20 per page</option>
+                            <option value="50">50 per page</option>
+                            <option value="100">100 per page</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter functionality
+            document.querySelectorAll('.filter-select').forEach(filter => {
+                filter.addEventListener('change', function() {
+                    console.log(`Filter changed: ${this.previousElementSibling.textContent} = ${this.value}`);
+                    // In a real application, this would trigger data filtering
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-filing input');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    console.log(`Searching for: ${this.value}`);
+                    // In a real application, this would trigger search
+                }
+            });
+        });
+    </script>
+</body>
+</html>
