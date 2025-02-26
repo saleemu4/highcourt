@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - Affidavit Management</title>
+    <link rel="stylesheet" href="affidavit-admin-styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Kano State</h2>
+                <p>High Court Management System</p>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Court Administrator</div>
+                </div>
+            </div>
+            
+            <div class="menu">
+                <div class="menu-title">Main Menu</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="index.html" class="menu-link">
+                            <span class="menu-icon">📊</span> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="case-management.html" class="menu-link">
+                            <span class="menu-icon">📁</span> <span>Case Management</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="e-filing.html" class="menu-link">
+                            <span class="menu-icon">📝</span> <span>E-Filing</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="document-management.html" class="menu-link">
+                            <span class="menu-icon">📄</span> <span>Document Management</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="file-tracking.html" class="menu-link">
+                            <span class="menu-icon">🔍</span> <span>File Tracking</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="e-library.html" class="menu-link">
+                            <span class="menu-icon">📚</span> <span>E-Library</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="affidavit-management.html" class="menu-link">
+                            <span class="menu-icon">📜</span> <span>Affidavit Management</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">Administration</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👥</span> <span>User Management</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">⚙️</span> <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">📊</span> <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="menu-title">My Account</div>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">👤</span> <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔔</span> <span>Notifications</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">🔒</span> <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <div class="header-container">
+            <div class="header-title">Kano State High Court</div>
+            
+            <div class="user-profile" id="user-profile">
+                <div class="profile-icon">A</div>
+                
+                <div class="user-dropdown" id="user-dropdown">
+                    <div class="dropdown-user-info">
+                        <div class="dropdown-user-name">Admin User</div>
+                        <div class="dropdown-user-role">Court Administrator</div>
+                    </div>
+                    
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <a href="#" class="dropdown-link">
+                                <span class="dropdown-icon">👤</span> Profile
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="#" class="dropdown-link">
+                                <span class="dropdown-icon">🔒</span> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>Affidavit Management</h1>
+                <button class="add-btn" id="createAffidavitBtn">
+                    <span class="btn-icon">➕</span> Create Manual Request
+                </button>
+            </div>
+            
+            <!-- Request Stats -->
+            <div class="request-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Total Requests</div>
+                        <div class="stat-icon icon-total">📊</div>
+                    </div>
+                    <div class="stat-count">824</div>
+                    <div class="stat-desc">Since inception</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Pending</div>
+                        <div class="stat-icon icon-pending">⏳</div>
+                    </div>
+                    <div class="stat-count">46</div>
+                    <div class="stat-desc">Awaiting processing</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Approved</div>
+                        <div class="stat-icon icon-approved">✅</div>
+                    </div>
+                    <div class="stat-count">752</div>
+                    <div class="stat-desc">Completed requests</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Rejected</div>
+                        <div class="stat-icon icon-rejected">❌</div>
+                    </div>
+                    <div class="stat-count">26</div>
+                    <div class="stat-desc">Denied requests</div>
+                </div>
+            </div>
+            
+            <!-- Filters and Search -->
+            <div class="filters-search">
+                <div class="filter-group">
+                    <span class="filter-label">Status:</span>
+                    <select class="filter-select" id="filterStatus">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Type:</span>
+                    <select class="filter-select" id="filterType">
+                        <option value="all">All Types</option>
+                        <option value="relationship">Affidavit of Relationship</option>
+                        <option value="withdrawal">Withdrawal of Case</option>
+                        <option value="marriage-age">Declaration of Marriage/Age</option>
+                        <option value="dob-correction">Correction of Date of Birth</option>
+                        <option value="name-correction">Correction of Name</option>
+                        <option value="name-change">Change of Name</option>
+                        <option value="loss">Loss of Documents</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Date:</span>
+                    <select class="filter-select" id="filterDate">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+                
+                <div class="search-request">
+                    <input type="text" placeholder="Search by ID, name, or phone number..." id="searchInput">
+                    <span>🔍</span>
+                </div>
+            </div>
+            
+            <!-- Requests Tabs -->
+            <div class="requests-tabs">
+                <div class="request-tab active" id="tab-all">All Requests</div>
+                <div class="request-tab" id="tab-pending">Pending</div>
+                <div class="request-tab" id="tab-processing">Processing</div>
+                <div class="request-tab" id="tab-approved">Approved</div>
+                <div class="request-tab" id="tab-rejected">Rejected</div>
+            </div>
+            
+            <!-- All Requests Tab Content -->
+            <div class="tab-content active" id="content-all">
+                <div class="requests-table-container">
+                    <table class="requests-table">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Applicant Name</th>
+                                <th>Affidavit Type</th>
+                                <th>Date Requested</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Request 1 -->
+                            <tr>
+                                <td>AFD-2025-67890</td>
+                                <td>Ahmed Ibrahim</td>
+                                <td>Affidavit of Relationship</td>
+                                <td>26 Feb 2025</td>
+                                <td>Kano Central</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" data-request="AFD-2025-67890">View</button>
+                                    <button class="action-btn process-btn" data-request="AFD-2025-67890">Process</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Request 2 -->
+                            <tr>
+                                <td>AFD-2025-67889</td>
+                                <td>Fatima Mohammed</td>
+                                <td>Correction of Name</td>
+                                <td>25 Feb 2025</td>
+                                <td>Kano North</td>
+                                <td><span class="status-badge status-processing">Processing</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" data-request="AFD-2025-67889">View</button>
+                                    <button class="action-btn approve-btn" data-request="AFD-2025-67889">Approve</button>
+                                    <button class="action-btn reject-btn" data-request="AFD-2025-67889">Reject</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Request 3 -->
+                            <tr>
+                                <td>AFD-2025-67888</td>
+                                <td>Usman Abdullahi</td>
+                                <td>Declaration of Age</td>
+                                <td>24 Feb 2025</td>
+                                <td>Kano Central</td>
+                                <td><span class="status-badge status-approved">Approved</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" data-request="AFD-2025-67888">View</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Request 4 -->
+                            <tr>
+                                <td>AFD-2025-67887</td>
+                                <td>Amina Yusuf</td>
+                                <td>Loss of Documents</td>
+                                <td>24 Feb 2025</td>
+                                <td>Kano South</td>
+                                <td><span class="status-badge status-rejected">Rejected</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" data-request="AFD-2025-67887">View</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Request 5 -->
+                            <tr>
+                                <td>AFD-2025-67886</td>
+                                <td>Mohammed Ali</td>
+                                <td>Change of Name</td>
+                                <td>23 Feb 2025</td>
+                                <td>Kano Central</td>
+                                <td><span class="status-badge status-approved">Approved</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" data-request="AFD-2025-67886">View</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Request 6 -->
+                            <tr>
+                                <td>AFD-2025-67885</td>
+                                <td>Hauwa Garba</td>
+                                <td>Withdrawal of Case</td>
+                                <td>22 Feb 2025</td>
+                                <td>Kano North</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" data-request="AFD-2025-67885">View</button>
+                                    <button class="action-btn process-btn" data-request="AFD-2025-67885">Process</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            Showing 1 to 6 of 824 requests
+                        </div>
+                        <div class="pagination">
+                            <button class="page-btn" disabled>Previous</button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">Next</button>
+                        </div>
+                        <div>
+                            <select class="dropdown-select" id="pageSize">
+                                <option value="6">6 per page</option>
+                                <option value="12">12 per page</option>
+                                <option value="24">24 per page</option>
+                                <option value="48">48 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other tab contents would be similar but with filtered data -->
+            <div class="tab-content" id="content-pending">
+                <!-- Similar table with only pending requests -->
+            </div>
+            
+            <div class="tab-content" id="content-processing">
+                <!-- Similar table with only processing requests -->
+            </div>
+            
+            <div class="tab-content" id="content-approved">
+                <!-- Similar table with only approved requests -->
+            </div>
+            
+            <div class="tab-content" id="content-rejected">
+                <!-- Similar table with only rejected requests -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Request Detail Modal -->
+    <div class="modal" id="requestDetailModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">Affidavit Request Details</div>
+                <button class="modal-close" id="closeDetailModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="request-overview">
+                    <div class="applicant-info">
+                        <div class="info-panel">
+                            <div class="panel-header">Applicant Information</div>
+                            <div class="panel-body">
+                                <div class="info-grid">
+                                    <div class="info-label">Full Name:</div>
+                                    <div class="info-value" id="applicantName">Ahmed Ibrahim</div>
+                                    
+                                    <div class="info-label">Gender:</div>
+                                    <div class="info-value" id="applicantGender">Male</div>
+                                    
+                                    <div class="info-label">Date of Birth:</div>
+                                    <div class="info-value" id="applicantDob">12 May 1985</div>
+                                    
+                                    <div class="info-label">Address:</div>
+                                    <div class="info-value" id="applicantAddress">15 Ibrahim Taiwo Road, Kano</div>
+                                    
+                                    <div class="info-label">Phone Number:</div>
+                                    <div class="info-value" id="applicantPhone">+234 802 345 6789</div>
+                                    
+                                    <div class="info-label">Email:</div>
+                                    <div class="info-value" id="applicantEmail">ahmed.ibrahim@example.com</div>
+                                    
+                                    <div class="info-label">ID Type:</div>
+                                    <div class="info-value" id="applicantIdType">National ID (NIN)</div>
+                                    
+                                    <div class="info-label">ID Number:</div>
+                                    <div class="info-value" id="applicantIdNumber">12345678901</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="request-info">
+                        <div class="info-panel">
+                            <div class="panel-header">Request Details</div>
+                            <div class="panel-body">
+                                <div class="info-grid">
+                                    <div class="info-label">Request ID:</div>
+                                    <div class="info-value" id="requestId">AFD-2025-67890</div>
+                                    
+                                    <div class="info-label">Date Requested:</div>
+                                    <div class="info-value" id="requestDate">26 Feb 2025, 10:45 AM</div>
+                                    
+                                    <div class="info-label">Affidavit Type:</div>
+                                    <div class="info-value" id="affidavitType">Affidavit of Relationship</div>
+                                    
+                                    <div class="info-label">Judicial Location:</div>
+                                    <div class="info-value" id="judicialLocation">Kano Central</div>
+                                    
+                                    <div class="info-label">Current Status:</div>
+                                    <div class="info-value" id="currentStatus"><span class="status-badge status-pending">Pending</span></div>
+                                    
+                                    <div class="info-label">Payment Status:</div>
+                                    <div class="info-value" id="paymentStatus"><span style="color: green; font-weight: bold;">Paid</span> (₦3,000)</div>
+                                    
+                                    <div class="info-label">Transaction Ref:</div>
+                                    <div class="info-value" id="transactionRef">TXN-54321</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <div class="panel-header">Purpose of Affidavit</div>
+                    <div class="panel-body">
+                        <p id="affidavitPurpose">I am requesting this affidavit to confirm the relationship between myself and my younger sister, Aisha Ibrahim. The affidavit is required by the National Youth Service Corps (NYSC) to support her relocation application to Kano State where I am currently residing.</p>
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <div class="panel-header">Submitted Documents</div>
+                    <div class="panel-body">
+                        <div class="document-previews" id="documentPreviews">
+                            <div class="document-preview">
+                                <div class="document-thumb">
+                                    <img src="https://placehold.co/200x200?text=Photo" alt="Passport Photograph">
+                                    <div class="download-overlay">
+                                        <button class="download-btn">⬇️</button>
+                                    </div>
+                                </div>
+                                <div class="document-label">Passport Photograph</div>
+                            </div>
+                            
+                            <div class="document-preview">
+                                <div class="document-thumb">
+                                    <img src="https://placehold.co/200x200?text=Signature" alt="Signature">
+                                    <div class="download-overlay">
+                                        <button class="download-btn">⬇️</button>
+                                    </div>
+                                </div>
+                                <div class="document-label">Signature</div>
+                            </div>
+                            
+                            <div class="document-preview">
+                                <div class="document-thumb">
+                                    <div class="document-icon">📄</div>
+                                    <div class="download-overlay">
+                                        <button class="download-btn">⬇️</button>
+                                    </div>
+                                </div>
+                                <div class="document-label">National ID</div>
+                            </div>
+                            
+                            <div class="document-preview">
+                                <div class="document-thumb">
+                                    <div class="document-icon">📄</div>
+                                    <div class="download-overlay">
+                                        <button class="download-btn">⬇️</button>
+                                    </div>
+                                </div>
+                                <div class="document-label">Birth Certificate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline">
+                    <h3>Request Timeline</h3>
+                    <div class="timeline-container" id="requestTimeline">
+                        <div class="timeline-item">
+                            <div class="timeline-point"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-title">Request Submitted</div>
+                                    <div class="timeline-date">26 Feb 2025, 10:45 AM</div>
+                                </div>
+                                <div class="timeline-desc">
+                                    Affidavit request submitted by applicant. Payment completed successfully.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="status-actions">
+                    <h3>Process Request</h3>
+                    <div class="action-group">
+                        <div class="action-input">
+                            <textarea placeholder="Add notes or comments about this request..." id="requestNotes"></textarea>
+                        </div>
+                        <button class="action-button process" id="processRequestBtn">Process Request</button>
+                    </div>
+                    
+                    <div class="action-group">
+                        <div class="action-input">
+                            <select style="width: 100%; padding: 10px; border: 1px solid var(--medium-gray); border-radius: 4px;" id="forwardSelect">
+                                <option value="">Forward to...</option>
+                                <option value="registrar">Chief Registrar</option>
+                                <option value="commissioner">Commissioner for Oaths</option>
+                                <option value="judge">Presiding Judge</option>
+                                <option value="admin">Administrative Officer</option>
+                            </select>
+                        </div>
+                        <button class="action-button forward" id="forwardRequestBtn">Forward Request</button>
+                    </div>
+                    
+                    <div class="action-group" style="justify-content: flex-end;">
+                        <button class="action-button approve" id="approveRequestBtn">Approve Request</button>
+                        <button class="action-button reject" id="rejectRequestBtn">Reject Request</button>
+                    </div>
+                </div>
+                
+                <!-- Affidavit Preview (shown only for approved requests or during final approval) -->
+                <div class="affidavit-preview-section" id="affidavitPreviewSection" style="display: none;">
+                    <h3>Affidavit Preview</h3>
+                    <div class="affidavit-preview">
+                        <div class="affidavit-watermark">DRAFT</div>
+                        
+                        <div class="affidavit-header">
+                            <div class="court-name">IN THE HIGH COURT OF JUSTICE</div>
+                            <div class="court-name">KANO STATE JUDICIARY</div>
+                            <div class="affidavit-title" id="previewAffidavitTitle">AFFIDAVIT OF RELATIONSHIP</div>
+                        </div>
+                        
+                        <div class="affidavit-content" id="previewAffidavitContent">
+                            <p>I, <strong id="previewApplicantName">AHMED IBRAHIM</strong>, Male, Muslim, Nigerian Citizen, residing at 15 Ibrahim Taiwo Road, Kano, do hereby make oath and state as follows:</p>
+                            
+                            <ol>
+                                <li>That I am the deponent herein and I swear to this affidavit in good faith.</li>
+                                <li>That I was born on the 12th day of May, 1985.</li>
+                                <li>That I am the elder brother of AISHA IBRAHIM.</li>
+                                <li>That we both share the same parents - Mr. Ibrahim Mohammed and Mrs. Fatima Ibrahim.</li>
+                                <li>That this affidavit is required to support her National Youth Service Corps (NYSC) relocation application to Kano State.</li>
+                                <li>That I make this solemn declaration conscientiously believing the same to be true and correct in accordance with the Oaths Act.</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="affidavit-footer">
+                            <div class="signature-section">
+                                <img src="https://placehold.co/200x80?text=Signature" alt="Applicant Signature" class="signature-img" id="previewApplicantSignature">
+                                <div class="signature-line"></div>
+                                <div class="signature-name" id="previewSignatureName">AHMED IBRAHIM</div>
+                                <div class="signature-title">DEPONENT</div>
+                            </div>
+                            
+                            <div class="signature-section">
+                                <img src="https://placehold.co/200x80?text=Signature" alt="Commissioner Signature" class="signature-img" id="previewCommissionerSignature">
+                                <div class="signature-line"></div>
+                                <div class="signature-name">COMMISSIONER FOR OATHS</div>
+                                <div class="signature-title">KANO STATE HIGH COURT</div>
+                            </div>
+                            
+                            <div class="stamp-section">
+                                OFFICIAL STAMP
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-affidavit">
+                        <p>Upload signed and stamped affidavit document (if already processed offline)</p>
+                        <input type="file" id="affidavitFile" style="display: none;">
+                        <button class="upload-btn" id="uploadAffidavitBtn">Upload Document</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Manual Request Modal -->
+    <div class="modal" id="createRequestModal">
+        <div class="modal-container" style="max-width: 800px;">
+            <div class="modal-header">
+                <div class="modal-title">Create Manual Affidavit Request</div>
+                <button class="modal-close" id="closeCreateModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="manualRequestForm">
+                    <h3>Applicant Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="middleName">Middle Name</label>
+                            <input type="text" id="middleName" name="middleName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Residential Address</label>
+                        <textarea id="address" name="address" rows="2" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="idType">ID Type</label>
+                            <select id="idType" name="idType" required>
+                                <option value="">Select ID Type</option>
+                                <option value="nin">National ID (NIN)</option>
+                                <option value="drivers">Driver's License</option>
+                                <option value="international">International Passport</option>
+                                <option value="voters">Voter's Card</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="idNumber">ID Number</label>
+                            <input type="text" id="idNumber" name="idNumber" required>
+                        </div>
+                    </div>
+                    
+                    <h3>Affidavit Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="affidavitType">Affidavit Type</label>
+                            <select id="affidavitType" name="affidavitType" required>
+                                <option value="">Select Affidavit Type</option>
+                                <option value="relationship">Affidavit of Relationship</option>
+                                <option value="withdrawal">Withdrawal of Case</option>
+                                <option value="marriage-age">Declaration of Marriage/Age</option>
+                                <option value="dob-correction">Correction of Date of Birth</option>
+                                <option value="name-correction">Correction of Name</option>
+                                <option value="name-change">Change of Name</option>
+                                <option value="loss">Loss of Documents</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Judicial Circuit/Location</label>
+                            <select id="location" name="location" required>
+                                <option value="">Select Judicial Circuit</option>
+                                <option value="kano-central">Kano Central</option>
+                                <option value="kano-north">Kano North</option>
+                                <option value="kano-south">Kano South</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="otherTypeField" style="display: none;">
+                        <label for="otherType">Specify Affidavit Type</label>
+                        <input type="text" id="otherType" name="otherType">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="purpose">Purpose of Affidavit</label>
+                        <textarea id="purpose" name="purpose" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="paymentStatus">Payment Status</label>
+                            <select id="paymentStatus" name="paymentStatus" required>
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="waived">Fee Waived</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="transactionRefField" style="display: none;">
+                            <label for="transactionRef">Transaction Reference</label>
+                            <input type="text" id="transactionRef" name="transactionRef">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="action-button process" style="width: 100%;">Create Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="affidavit-admin-script.js"></script>
+</body>
+</html>

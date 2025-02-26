@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kano State High Court - Request an Affidavit</title>
+    <link rel="stylesheet" href="affidavit-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-text">
+                    <h1>Kano State High Court</h1>
+                    <p>Judiciary Services Portal</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="affidavit-index.html" class="nav-link">Home</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Services</a>
+                <a href="affidavit-request-form.html" class="nav-link active">Affidavit</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="auth-buttons">
+                <button class="auth-btn login-btn" id="loginBtn">Login</button>
+                <button class="auth-btn register-btn" id="registerBtn">Register</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Request Form Section -->
+    <section class="request-form-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Request an Affidavit</h2>
+                <p>Please fill out the form below to submit your affidavit request</p>
+            </div>
+
+            <!-- The multi-step form, taken directly from the modal -->
+            <div class="multi-step-form">
+                <div class="form-header">
+                    <h2>Request an Affidavit</h2>
+                    <p>Please provide the required information to process your affidavit</p>
+                </div>
+
+                <div class="form-progress">
+                    <div class="progress-step active" id="step1-tab">1. Personal Information</div>
+                    <div class="progress-step" id="step2-tab">2. Affidavit Type</div>
+                    <div class="progress-step" id="step3-tab">3. Document Upload</div>
+                    <div class="progress-step" id="step4-tab">4. Payment</div>
+                    <div class="progress-step" id="step5-tab">5. Confirmation</div>
+                </div>
+
+                <form id="affidavitForm">
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step1">
+                        <div class="form-body">
+                            <h3>Personal Information</h3>
+                            <p>Please provide your personal details for the affidavit.</p>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="afFirstName">First Name</label>
+                                    <input type="text" id="afFirstName" name="firstName" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="afMiddleName">Middle Name</label>
+                                    <input type="text" id="afMiddleName" name="middleName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="afLastName">Last Name</label>
+                                    <input type="text" id="afLastName" name="lastName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="afGender">Gender</label>
+                                    <select id="afGender" name="gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="afDob">Date of Birth</label>
+                                    <input type="date" id="afDob" name="dob" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="afAddress">Residential Address</label>
+                                <textarea id="afAddress" name="address" rows="3" required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="afPhone">Phone Number</label>
+                                    <input type="tel" id="afPhone" name="phone" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="afEmail">Email Address</label>
+                                    <input type="email" id="afEmail" name="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="afIdType">ID Type</label>
+                                    <select id="afIdType" name="idType" required>
+                                        <option value="">Select ID Type</option>
+                                        <option value="nin">National ID (NIN)</option>
+                                        <option value="drivers">Driver's License</option>
+                                        <option value="international">International Passport</option>
+                                        <option value="voters">Voter's Card</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="afIdNumber">ID Number</label>
+                                    <input type="text" id="afIdNumber" name="idNumber" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="afLocation">Judicial Circuit/Location</label>
+                                <select id="afLocation" name="location" required>
+                                    <option value="">Select Judicial Circuit</option>
+                                    <option value="kano-central">Kano Central</option>
+                                    <option value="kano-north">Kano North</option>
+                                    <option value="kano-south">Kano South</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <div></div>
+                            <button type="button" class="form-btn btn-next" id="step1Next">Next Step</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Affidavit Type -->
+                    <div class="form-step" id="step2">
+                        <div class="form-body">
+                            <h3>Affidavit Type</h3>
+                            <p>Please select the type of affidavit you wish to request.</p>
+
+                            <div class="affidavit-types">
+                                <div class="affidavit-type-card" data-type="relationship">
+                                    <div class="affidavit-type-icon">👪</div>
+                                    <div class="affidavit-type-title">Affidavit of Relationship</div>
+                                    <div class="affidavit-type-desc">Confirms the relationship between two or more individuals</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="withdrawal">
+                                    <div class="affidavit-type-icon">🔙</div>
+                                    <div class="affidavit-type-title">Withdrawal of Case</div>
+                                    <div class="affidavit-type-desc">Formal withdrawal of a pending legal case</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="marriage-age">
+                                    <div class="affidavit-type-icon">💍</div>
+                                    <div class="affidavit-type-title">Declaration of Marriage/Age</div>
+                                    <div class="affidavit-type-desc">Confirms marriage status or declares age officially</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="dob-correction">
+                                    <div class="affidavit-type-icon">📅</div>
+                                    <div class="affidavit-type-title">Correction of Date of Birth</div>
+                                    <div class="affidavit-type-desc">Corrects date of birth on official records</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="name-correction">
+                                    <div class="affidavit-type-icon">✏️</div>
+                                    <div class="affidavit-type-title">Correction of Name</div>
+                                    <div class="affidavit-type-desc">Corrects spelling or name errors on official documents</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="name-change">
+                                    <div class="affidavit-type-icon">🔄</div>
+                                    <div class="affidavit-type-title">Change of Name</div>
+                                    <div class="affidavit-type-desc">Declaration of name change for official purposes</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="loss">
+                                    <div class="affidavit-type-icon">🔍</div>
+                                    <div class="affidavit-type-title">Loss of Documents</div>
+                                    <div class="affidavit-type-desc">Confirms the loss of important documents</div>
+                                </div>
+
+                                <div class="affidavit-type-card" data-type="other">
+                                    <div class="affidavit-type-icon">📋</div>
+                                    <div class="affidavit-type-title">Other</div>
+                                    <div class="affidavit-type-desc">Other types of affidavits not listed above</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="otherAffidavitType" style="display: none;">
+                                <label for="afOtherType">Please Specify Affidavit Type</label>
+                                <input type="text" id="afOtherType" name="otherType">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="afPurpose">Purpose of Affidavit</label>
+                                <textarea id="afPurpose" name="purpose" rows="3" placeholder="Please describe why you need this affidavit and how it will be used" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <button type="button" class="form-btn btn-prev" id="step2Prev">Previous Step</button>
+                            <button type="button" class="form-btn btn-next" id="step2Next">Next Step</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Document Upload -->
+                    <div class="form-step" id="step3">
+                        <div class="form-body">
+                            <h3>Document Upload</h3>
+                            <p>Please upload the required documents to support your affidavit request.</p>
+
+                            <div class="form-group">
+                                <label>Passport Photograph</label>
+                                <div class="file-upload" id="photoUpload">
+                                    <div class="upload-icon">📷</div>
+                                    <div class="upload-text">Click to upload your passport photograph</div>
+                                    <div class="upload-hint">JPG or PNG format, max 2MB</div>
+                                    <input type="file" accept="image/*" id="passportPhoto" name="passportPhoto" required>
+                                </div>
+                                <div class="preview-container" id="photoPreview"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Signature</label>
+                                <div class="file-upload" id="signatureUpload">
+                                    <div class="upload-icon">✍️</div>
+                                    <div class="upload-text">Click to upload a clear image of your signature</div>
+                                    <div class="upload-hint">JPG or PNG format, max 1MB</div>
+                                    <input type="file" accept="image/*" id="signature" name="signature" required>
+                                </div>
+                                <div class="preview-container" id="signaturePreview"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Identification Document</label>
+                                <div class="file-upload" id="idUpload">
+                                    <div class="upload-icon">🪪</div>
+                                    <div class="upload-text">Click to upload your ID document</div>
+                                    <div class="upload-hint">JPG, PNG or PDF format, max 3MB</div>
+                                    <input type="file" accept="image/*,.pdf" id="idDocument" name="idDocument" required>
+                                </div>
+                                <div class="preview-container" id="idPreview"></div>
+                            </div>
+
+                            <div class="form-group" id="supportingDocsSection">
+                                <label>Supporting Documents (if applicable)</label>
+                                <div class="file-upload" id="supportingUpload">
+                                    <div class="upload-icon">📄</div>
+                                    <div class="upload-text">Click to upload supporting documents</div>
+                                    <div class="upload-hint">JPG, PNG or PDF format, max 5MB</div>
+                                    <input type="file" accept="image/*,.pdf" id="supportingDocs" name="supportingDocs" multiple>
+                                </div>
+                                <div class="preview-container" id="supportingPreview"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <button type="button" class="form-btn btn-prev" id="step3Prev">Previous Step</button>
+                            <button type="button" class="form-btn btn-next" id="step3Next">Next Step</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Payment -->
+                    <div class="form-step" id="step4">
+                        <div class="form-body">
+                            <h3>Payment</h3>
+                            <p>Please review your order details and proceed to payment.</p>
+
+                            <div class="form-group">
+                                <label>Order Summary</label>
+                                <div class="order-summary">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Affidavit Type:</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: 500;" id="summaryType">Affidavit of Relationship</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Processing Fee:</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: 500;">₦2,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee;">Stamp Duty:</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: 500;">₦500</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Total Amount:</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; color: var(--primary);">₦3,000</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Payment Method</label>
+                                <div class="payment-methods">
+                                    <div class="payment-method-card" data-method="card">
+                                        <img src="https://placehold.co/150x50?text=Card+Payment" alt="Card Payment" class="payment-method-icon">
+                                        <div class="payment-method-title">Card Payment</div>
+                                    </div>
+
+                                    <div class="payment-method-card" data-method="bank">
+                                        <img src="https://placehold.co/150x50?text=Bank+Transfer" alt="Bank Transfer" class="payment-method-icon">
+                                        <div class="payment-method-title">Bank Transfer</div>
+                                    </div>
+
+                                    <div class="payment-method-card" data-method="ussd">
+                                        <img src="https://placehold.co/150x50?text=USSD" alt="USSD" class="payment-method-icon">
+                                        <div class="payment-method-title">USSD</div>
+                                    </div>
+
+                                    <div class="payment-method-card" data-method="mobile">
+                                        <img src="https://placehold.co/150x50?text=Mobile+Money" alt="Mobile Money" class="payment-method-icon">
+                                        <div class="payment-method-title">Mobile Money</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Payment Form (will show/hide based on selected payment method) -->
+                            <div id="cardPaymentForm" style="display: none;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cardName">Cardholder Name</label>
+                                        <input type="text" id="cardName" placeholder="Name on card">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardNumber">Card Number</label>
+                                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cardExpiry">Expiry Date</label>
+                                        <input type="text" id="cardExpiry" placeholder="MM/YY">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardCvv">CVV</label>
+                                        <input type="text" id="cardCvv" placeholder="123">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <button type="button" class="form-btn btn-prev" id="step4Prev">Previous Step</button>
+                            <button type="button" class="form-btn btn-submit" id="step4Next">Pay Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Confirmation -->
+                    <div class="form-step" id="step5">
+                        <div class="form-body">
+                            <div class="success-message">
+                                <div class="success-icon">✓</div>
+                                <div class="success-title">Affidavit Request Submitted!</div>
+                                <div class="success-desc">
+                                    Your affidavit request has been successfully submitted and is now being processed. 
+                                    You will receive updates via email and can also check the status through your account dashboard.
+                                </div>
+                                <div class="order-details">
+                                    <p><strong>Request ID:</strong> <span id="requestId">AFD-2024-05678</span></p>
+                                    <p><strong>Date Submitted:</strong> <span id="submitDate">February 26, 2025</span></p>
+                                    <p><strong>Estimated Processing Time:</strong> 1-3 business days</p>
+                                </div>
+                                <div class="success-actions">
+                                    <a href="dashboard.html" class="cta-btn">Go to Dashboard</a>
+                                    <a href="index.html" class="form-btn btn-outline">Return to Home</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Kano State High Court</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Court Services</a></li>
+                        <li><a href="#">Court Schedule</a></li>
+                        <li><a href="#">E-Filing</a></li>
+                        <li><a href="#">Court Records</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Affidavit Services</h3>
+                    <ul>
+                        <li><a href="#">Types of Affidavits</a></li>
+                        <li><a href="#">Fees & Charges</a></li>
+                        <li><a href="#">Processing Time</a></li>
+                        <li><a href="#">Required Documents</a></li>
+                        <li><a href="#">Verification</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contact Information</h3>
+                    <div class="contact-info">
+                        <span class="contact-icon">📍</span>
+                        <span>Kano State High Court, Audu Bako Way, Kano</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="contact-icon">📞</span>
+                        <span>+234 800 123 4567</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="contact-icon">✉️</span>
+                        <span>info@kanohighcourt.gov.ng</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kano State High Court. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Login to Your Account</h2>
+                <p>Access your affidavit services dashboard</p>
+            </div>
+            <div class="auth-body">
+                <div class="social-auth">
+                    <button class="social-btn">G</button>
+                    <button class="social-btn">f</button>
+                    <button class="social-btn">in</button>
+                </div>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">or login with email</div>
+                    <div class="divider-line"></div>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn-next" style="width: 100%;">Login</button>
+                    </div>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="#" class="auth-link" id="showRegister">Register</a></p>
+                <p><a href="#" class="auth-link">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Create a New Account</h2>
+                <p>Register to use our affidavit services</p>
+            </div>
+            <div class="auth-body">
+                <div class="social-auth">
+                    <button class="social-btn">G</button>
+                    <button class="social-btn">f</button>
+                    <button class="social-btn">in</button>
+                </div>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">or register with email</div>
+                    <div class="divider-line"></div>
+                </div>
+
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Enter your last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn-next" style="width: 100%;">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <p>Already have an account? <a href="#" class="auth-link" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="affidavit-script.js"></script>
+</body>
+</html>

@@ -57,6 +57,11 @@
                             <span class="menu-icon">📚</span> E-Library
                         </a>
                     </li>
+                    <li class="menu-item">
+                        <a href="affidavit-management.html" class="menu-link">
+                            <span class="menu-icon">📜</span> <span>Affidavit Management</span>
+                        </a>
+                    </li>
                 </ul>
                 
                 <div class="menu-title">Administration</div>
@@ -197,6 +202,34 @@
                             </span>
                         </div>
                     </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Affidavit Requests</div>
+                            <div class="stat-icon" style="background-color: var(--success);">📜</div>
+                        </div>
+                        <div class="stat-value">824</div>
+                        <div class="stat-desc">
+                            From last month
+                            <span class="stat-trend trend-up">
+                                ↑ 15.8%
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">E-library Resources</div>
+                            <div class="stat-icon" style="background-color: var(--medium-gray);">📚</div>
+                        </div>
+                        <div class="stat-value">11,254</div>
+                        <div class="stat-desc">
+                            From last month
+                            <span class="stat-trend trend-up">
+                                ↑ 22.8%
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Charts Section -->
@@ -243,6 +276,7 @@
                             <canvas id="resolutionRateChart"></canvas>
                         </div>
                     </div>
+                    
                 </div>
                 
                 <!-- Recent Cases Table -->
@@ -302,6 +336,70 @@
                                 <td>01 Feb 2024</td>
                                 <td>Commercial</td>
                                 <td><span class="status-badge status-active">Active</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        
+                    <!-- Add this to the chart row -->
+                    <div class="small-chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">Affidavit Types Distribution</div>
+                            <div class="chart-period">Current Year</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="affidavitTypesChart"></canvas>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <br/>
+
+                <!-- Recent Affidavit Requests -->
+                <div class="case-table-container">
+                    <div class="section-header">
+                        <div class="section-title">Recent Affidavit Requests</div>
+                        <a href="affidavit-management.html" class="view-all">View All Requests</a>
+                    </div>
+                    
+                    <table class="case-table">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Applicant Name</th>
+                                <th>Affidavit Type</th>
+                                <th>Date Requested</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="case-id">AFD-2025-67890</td>
+                                <td>Ahmed Ibrahim</td>
+                                <td>Affidavit of Relationship</td>
+                                <td>26 Feb 2025</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="case-id">AFD-2025-67889</td>
+                                <td>Fatima Mohammed</td>
+                                <td>Correction of Name</td>
+                                <td>25 Feb 2025</td>
+                                <td><span class="status-badge status-processing">Processing</span></td>
+                                <td><button class="action-button">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="case-id">AFD-2025-67888</td>
+                                <td>Usman Abdullahi</td>
+                                <td>Declaration of Age</td>
+                                <td>24 Feb 2025</td>
+                                <td><span class="status-badge status-approved">Approved</span></td>
                                 <td><button class="action-button">View</button></td>
                             </tr>
                         </tbody>
@@ -400,6 +498,24 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="module-card" onclick="window.location.href='affidavit-management.html'">
+                        <div class="module-icon" style="background-color: var(--success);">📜</div>
+                        <div class="module-title">Affidavit Management</div>
+                        <div class="module-desc">
+                            Comprehensive system for processing affidavit requests, approvals, and digital delivery to citizens.
+                        </div>
+                        <div class="module-stats">
+                            <div class="module-stat">
+                                <div class="stat-number">824</div>
+                                <div class="stat-label">Total Requests</div>
+                            </div>
+                            <div class="module-stat">
+                                <div class="stat-number">46</div>
+                                <div class="stat-label">Pending</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -460,15 +576,16 @@
                 const caseDistributionChart = new Chart(caseDistributionCtx, {
                     type: 'pie',
                     data: {
-                        labels: ['Civil', 'Criminal', 'Commercial', 'Probate', 'Administrative'],
+                        labels: ['Civil', 'Criminal', 'Commercial', 'Probate', 'Administrative', 'Affidavits'],
                         datasets: [{
-                            data: [42, 28, 15, 8, 7],
+                            data: [42, 28, 15, 8, 7, 10],
                             backgroundColor: [
                                 'rgba(26, 60, 110, 0.7)',
                                 'rgba(220, 53, 69, 0.7)',
                                 'rgba(40, 167, 69, 0.7)',
                                 'rgba(23, 162, 184, 0.7)',
-                                'rgba(255, 193, 7, 0.7)'
+                                'rgba(255, 193, 7, 0.7)',
+                                'rgba(153, 102, 255, 0.7)'
                             ],
                             borderColor: '#ffffff',
                             borderWidth: 2
@@ -558,6 +675,42 @@
                                 title: {
                                     display: true,
                                     text: 'Percentage (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Affidavit Types Distribution
+                const affidavitTypesCtx = document.getElementById('affidavitTypesChart').getContext('2d');
+                const affidavitTypesChart = new Chart(affidavitTypesCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Relationship', 'Name Change', 'Age Declaration', 'Document Loss', 'Others'],
+                        datasets: [{
+                            data: [35, 25, 20, 15, 5],
+                            backgroundColor: [
+                                'rgba(40, 167, 69, 0.7)',
+                                'rgba(23, 162, 184, 0.7)',
+                                'rgba(255, 193, 7, 0.7)',
+                                'rgba(153, 102, 255, 0.7)',
+                                'rgba(108, 117, 125, 0.7)'
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: {
+                                        size: 10
+                                    }
                                 }
                             }
                         }
