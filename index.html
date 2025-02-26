@@ -3,740 +3,708 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kano State High Court - Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <title>Kano State High Court - Affidavit Services</title>
+    <link rel="stylesheet" href="affidavit-styles.css">
+    <style>
+        
+        /* Additional styles for the carousel and image slider */
+        .hero {
+            padding: 0;
+            position: relative;
+            height: 550px;
+            overflow: hidden;
+        }
+
+        .hero-slider {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .slider-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-item.active {
+            opacity: 1;
+        }
+
+        .slider-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: white;
+        }
+
+        /* Testimonials carousel */
+        .testimonials-section {
+            padding: 60px 0;
+            background-color: var(--light-gray);
+        }
+
+        .testimonials-carousel {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto 0;
+            overflow: hidden;
+        }
+
+        .testimonials-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-item {
+            min-width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .testimonial-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: var(--dark-gray);
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .testimonial-role {
+            font-size: 14px;
+            color: var(--dark-gray);
+            margin-top: 5px;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .carousel-btn {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-btn:hover {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Court gallery */
+        .gallery-section {
+            padding: 60px 0;
+            background-color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            position: relative;
+            aspect-ratio: 4/3;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .hero {
+                height: 400px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .testimonial-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>Kano State</h2>
-                <p>High Court Management System</p>
-            </div>
-            
-            <div class="user-info">
-                <div class="user-avatar">A</div>
-                <div class="user-details">
-                    <div class="user-name">Admin User</div>
-                    <div class="user-role">Court Administrator</div>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-text">
+                    <h1>Kano State High Court</h1>
+                    <p>Judiciary Services Portal</p>
                 </div>
             </div>
-            
-            <div class="menu">
-                <div class="menu-title">Main Menu</div>
-                <ul class="menu-items">
-                    <li class="menu-item active">
-                        <a href="index.html" class="menu-link">
-                            <span class="menu-icon">📊</span> Dashboard
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="case-management.html" class="menu-link">
-                            <span class="menu-icon">📁</span> Case Management
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="e-filing.html" class="menu-link">
-                            <span class="menu-icon">📝</span> E-Filing
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="document-management.html" class="menu-link">
-                            <span class="menu-icon">📄</span> Document Management
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="file-tracking.html" class="menu-link">
-                            <span class="menu-icon">🔍</span> File Tracking
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="e-library.html" class="menu-link">
-                            <span class="menu-icon">📚</span> E-Library
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="affidavit-management.html" class="menu-link">
-                            <span class="menu-icon">📜</span> <span>Affidavit Management</span>
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="menu-title">Administration</div>
-                <ul class="menu-items">
-                    <li class="menu-item">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">👥</span> User Management
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">⚙️</span> Settings
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">📊</span> Reports
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="menu-title">My Account</div>
-                <ul class="menu-items">
-                    <li class="menu-item">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">👤</span> Profile
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">🔔</span> Notifications <span class="draft-badge">3</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" class="menu-link">
-                            <span class="menu-icon">🔒</span> Logout
-                        </a>
-                    </li>
-                </ul>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Services</a>
+                <a href="affidavit-request-form.html" class="nav-link">Affidavit</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="auth-buttons">
+                <button class="auth-btn login-btn" id="loginBtn">Login</button>
+                <button class="auth-btn register-btn" id="registerBtn">Register</button>
+                <a href="dashboard.html" class="dash-btn">Admin Dashboard</a>
             </div>
         </div>
-        
-        <!-- Header -->
-        <div class="header-container">
-            <div class="header-title">Kano State High Court</div>
-            
-            <div class="user-profile" id="user-profile">
-                <div class="profile-icon">A</div>
-                
-                <div class="user-dropdown" id="user-dropdown">
-                    <div class="dropdown-user-info">
-                        <div class="dropdown-user-name">Admin User</div>
-                        <div class="dropdown-user-role">Court Administrator</div>
+    </header>
+<!-- Hero Section with Slider -->
+    <section class="hero">
+        <div class="slider-overlay"></div>
+        <div class="hero-slider" id="heroSlider">
+            <div class="slider-item active" style="background-image: url('https://placehold.co/1200x500?text=Kano+State+High+Court');">
+                <div class="hero-content">
+                    <h1>Kano State High Court Affidavit Services</h1>
+                    <p>Apply for, manage, and download your affidavit documents online with ease. Our secure digital platform makes the process faster and more convenient.</p>
+                    <a href="affidavit-request-form.html" class="cta-btn">Request an Affidavit</a>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url('https://placehold.co/1200x500?text=Court+Building');">
+                <div class="hero-content">
+                    <h1>Modernized Court Services</h1>
+                    <p>Experience our digitized court services designed to improve access to justice for all citizens.</p>
+                    <a href="affidavit-request-form.html" class="cta-btn">Request an Affidavit</a>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url('https://placehold.co/1200x500?text=Digital+Services');">
+                <div class="hero-content">
+                    <h1>Fast and Secure Processing</h1>
+                    <p>Get your legal documents processed quickly through our secure digital platform with minimal waiting time.</p>
+                    <a href="affidavit-request-form.html" class="cta-btn">Request an Affidavit</a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-nav" id="sliderNav">
+            <div class="slider-dot active"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="info-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Affidavit Services</h2>
+                <p>The Kano State High Court provides various types of affidavits to meet your legal needs. These official documents are legally binding statements sworn under oath.</p>
+            </div>
+
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="card-icon">📝</div>
+                    <h3>Types of Affidavits</h3>
+                    <p>We provide various affidavit services including:</p>
+                    <ul>
+                        <li>Affidavit of Relationship</li>
+                        <li>Withdrawal of Case</li>
+                        <li>Declaration of Marriage or Age</li>
+                        <li>Correction of Date of Birth</li>
+                        <li>Correction of Name</li>
+                        <li>Change of Name</li>
+                        <li>Loss of Documents</li>
+                    </ul>
+                    <a href="affidavit-request-form.html" class="card-link">Request an affidavit →</a>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon">⚖️</div>
+                    <h3>Legal Validity</h3>
+                    <p>All affidavits issued through our platform are:</p>
+                    <ul>
+                        <li>Legally binding documents</li>
+                        <li>Signed by a Commissioner for Oaths</li>
+                        <li>Stamped with the official court seal</li>
+                        <li>Recognized by all governmental bodies</li>
+                        <li>Verifiable through our online system</li>
+                    </ul>
+                    <a href="#" class="card-link">Learn more about legal requirements →</a>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon">🔐</div>
+                    <h3>Secure & Convenient</h3>
+                    <p>Our digital affidavit service offers:</p>
+                    <ul>
+                        <li>Secure account creation and management</li>
+                        <li>Online application submission</li>
+                        <li>Digital payment options</li>
+                        <li>Real-time status tracking</li>
+                        <li>Digital download of approved affidavits</li>
+                        <li>Verification system for authenticity</li>
+                    </ul>
+                    <a href="#" class="card-link">Learn about our security measures →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Court Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Court Facilities</h2>
+                <p>Explore our modern court facilities designed to deliver efficient and accessible justice services.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://placehold.co/400x300?text=Courtroom" alt="Main Courtroom" class="gallery-image">
+                    <div class="gallery-caption">Main Courtroom - Kano High Court</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/400x300?text=Registry" alt="Court Registry" class="gallery-image">
+                    <div class="gallery-caption">Court Registry Office</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/400x300?text=E-Filing+Center" alt="E-Filing Center" class="gallery-image">
+                    <div class="gallery-caption">E-Filing and Digital Services Center</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/400x300?text=Waiting+Area" alt="Waiting Area" class="gallery-image">
+                    <div class="gallery-caption">Modern Waiting Area for Citizens</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/400x300?text=Court+Library" alt="Court Library" class="gallery-image">
+                    <div class="gallery-caption">Kano State High Court Library</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://placehold.co/400x300?text=Affidavit+Office" alt="Affidavit Office" class="gallery-image">
+                    <div class="gallery-caption">Affidavit Processing Office</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Getting your affidavit is simple with our online system. Follow these steps to obtain your document.</p>
+            </div>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Create Account</div>
+                    <div class="step-desc">Register and create your secure user account</div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Request Affidavit</div>
+                    <div class="step-desc">Select type and provide required information</div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Pay Fees</div>
+                    <div class="step-desc">Make payment through our secure platform</div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Processing</div>
+                    <div class="step-desc">Court officials review and process your request</div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Download</div>
+                    <div class="step-desc">Receive and download your approved affidavit</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section with Carousel -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>What People Say</h2>
+                <p>Hear from citizens who have used our online affidavit services</p>
+            </div>
+
+            <div class="testimonials-carousel">
+                <div class="carousel-nav">
+                    <div class="carousel-btn prev-btn">❮</div>
+                    <div class="carousel-btn next-btn">❯</div>
+                </div>
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <div class="testimonial-item">
+                        <div class="testimonial-card">
+                            <div class="testimonial-text">
+                                "I was impressed by how fast and efficient the online affidavit service is. I completed my request from home and received my document in just 2 days. This has saved me so much time compared to the old process."
+                            </div>
+                            <div class="testimonial-author">Aisha Mohammed</div>
+                            <div class="testimonial-role">Business Owner, Kano</div>
+                        </div>
                     </div>
-                    
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                            <a href="#" class="dropdown-link">
-                                <span class="dropdown-icon">👤</span> Profile
-                            </a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="#" class="dropdown-link">
-                                <span class="dropdown-icon">🔒</span> Logout
-                            </a>
-                        </li>
+                    <div class="testimonial-item">
+                        <div class="testimonial-card">
+                            <div class="testimonial-text">
+                                "The digital transformation of court services in Kano State is commendable. I needed an affidavit urgently and was able to complete the whole process online, including payment. Very convenient!"
+                            </div>
+                            <div class="testimonial-author">Ibrahim Musa</div>
+                            <div class="testimonial-role">Civil Servant</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item">
+                        <div class="testimonial-card">
+                            <div class="testimonial-text">
+                                "As someone who lives far from the city center, this online service has been a game-changer. I didn't have to travel all the way to the court for my affidavit of relationship. The staff were also very helpful with my questions."
+                            </div>
+                            <div class="testimonial-author">Fatima Usman</div>
+                            <div class="testimonial-role">Teacher, Kano North</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about our affidavit services.</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is an affidavit?
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        An affidavit is a written statement confirmed by oath or affirmation for use as evidence in court or other legal proceedings. It is a legally binding document where a person swears that the facts contained in the document are true to the best of their knowledge.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How long does it take to process an affidavit?
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        The processing time for an affidavit typically takes 1-3 business days once all required information and payment have been received. Complex cases may take longer. You can track the status of your affidavit request through your account dashboard.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What documents do I need to provide?
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        The required documents vary depending on the type of affidavit you're requesting. Generally, you will need to provide your valid ID (National ID, driver's license, or passport), recent passport photograph, and any supporting documents relevant to your affidavit (such as birth certificates for age declaration, or documents showing previous name for change of name). The system will guide you through the specific requirements during the application process.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How much does an affidavit cost?
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        The fee for an affidavit depends on the type. Standard affidavits cost between ₦2,000 and ₦5,000. More complex affidavits may have additional fees. The exact cost will be displayed before you confirm your request and proceed to payment.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I apply for an affidavit on behalf of someone else?
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, you can apply for an affidavit on behalf of someone else. However, you will need to provide additional documentation proving your relationship to the person and/or authorization to act on their behalf. The system will guide you through the required documentation during the application process.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What payment methods are accepted?
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        We accept various payment methods including debit/credit cards, bank transfers, and popular mobile payment platforms like Paystack, Flutterwave, and other local payment options. All payments are processed securely through our payment gateway.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Kano State High Court</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Court Services</a></li>
+                        <li><a href="#">Court Schedule</a></li>
+                        <li><a href="#">E-Filing</a></li>
+                        <li><a href="#">Court Records</a></li>
                     </ul>
                 </div>
+
+                <div class="footer-col">
+                    <h3>Affidavit Services</h3>
+                    <ul>
+                        <li><a href="#">Types of Affidavits</a></li>
+                        <li><a href="#">Fees & Charges</a></li>
+                        <li><a href="#">Processing Time</a></li>
+                        <li><a href="#">Required Documents</a></li>
+                        <li><a href="#">Verification</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contact Information</h3>
+                    <div class="contact-info">
+                        <span class="contact-icon">📍</span>
+                        <span>Kano State High Court, Audu Bako Way, Kano</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="contact-icon">📞</span>
+                        <span>+234 800 123 4567</span>
+                    </div>
+                    <div class="contact-info">
+                        <span class="contact-icon">✉️</span>
+                        <span>info@kanohighcourt.gov.ng</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kano State High Court. All Rights Reserved.</p>
             </div>
         </div>
-        
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Dashboard Page -->
-            <div class="page active">
-                <div class="header">
-                    <h1>Dashboard Overview</h1>
-                    <div class="search-bar">
-                        <input type="text" class="search-input" placeholder="Search cases, documents, files...">
-                        <span>🔍</span>
-                    </div>
-                </div>
-                
-                <!-- Statistics Cards -->
-                <div class="dashboard-stats">
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-title">Total Active Cases</div>
-                            <div class="stat-icon" style="background-color: var(--primary);">📊</div>
-                        </div>
-                        <div class="stat-value">1,248</div>
-                        <div class="stat-desc">
-                            From last month
-                            <span class="stat-trend trend-up">
-                                ↑ 12.5%
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-title">E-Filed Documents</div>
-                            <div class="stat-icon" style="background-color: var(--secondary);">📝</div>
-                        </div>
-                        <div class="stat-value">5,842</div>
-                        <div class="stat-desc">
-                            From last month
-                            <span class="stat-trend trend-up">
-                                ↑ 18.3%
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-title">Pending Hearings</div>
-                            <div class="stat-icon" style="background-color: var(--warning);">⏱️</div>
-                        </div>
-                        <div class="stat-value">328</div>
-                        <div class="stat-desc">
-                            From last month
-                            <span class="stat-trend trend-down">
-                                ↓ 5.2%
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-title">Documents Tracked</div>
-                            <div class="stat-icon" style="background-color: var(--info);">🔍</div>
-                        </div>
-                        <div class="stat-value">9,254</div>
-                        <div class="stat-desc">
-                            From last month
-                            <span class="stat-trend trend-up">
-                                ↑ 9.7%
-                            </span>
-                        </div>
-                    </div>
+    </footer>
 
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-title">Affidavit Requests</div>
-                            <div class="stat-icon" style="background-color: var(--success);">📜</div>
-                        </div>
-                        <div class="stat-value">824</div>
-                        <div class="stat-desc">
-                            From last month
-                            <span class="stat-trend trend-up">
-                                ↑ 15.8%
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div class="stat-title">E-library Resources</div>
-                            <div class="stat-icon" style="background-color: var(--medium-gray);">📚</div>
-                        </div>
-                        <div class="stat-value">11,254</div>
-                        <div class="stat-desc">
-                            From last month
-                            <span class="stat-trend trend-up">
-                                ↑ 22.8%
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Charts Section -->
-                <div class="charts-container">
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <div class="chart-title">Case Load Analysis</div>
-                            <div class="chart-period">Jan - Dec 2024</div>
-                        </div>
-                        <div class="chart-content">
-                            <canvas id="caseLoadChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <div class="chart-title">Case Distribution</div>
-                            <div class="chart-period">Current Period</div>
-                        </div>
-                        <div class="chart-content">
-                            <canvas id="caseDistributionChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional Charts Row -->
-                <div class="chart-row">
-                    <div class="small-chart-card">
-                        <div class="chart-header">
-                            <div class="chart-title">Document Upload Trends</div>
-                            <div class="chart-period">Last 6 Months</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="docUploadChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="small-chart-card">
-                        <div class="chart-header">
-                            <div class="chart-title">Case Resolution Rate</div>
-                            <div class="chart-period">By Case Type</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="resolutionRateChart"></canvas>
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <!-- Recent Cases Table -->
-                <div class="case-table-container">
-                    <div class="section-header">
-                        <div class="section-title">Recent Cases</div>
-                        <a href="case-management.html" class="view-all">View All Cases</a>
-                    </div>
-                    
-                    <table class="case-table">
-                        <thead>
-                            <tr>
-                                <th>Case ID</th>
-                                <th>Title</th>
-                                <th>Filed Date</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="case-id">KHC-2024-0235</td>
-                                <td>State vs. Johnson</td>
-                                <td>15 Feb 2024</td>
-                                <td>Criminal</td>
-                                <td><span class="status-badge status-active">Active</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                            <tr>
-                                <td class="case-id">KHC-2024-0228</td>
-                                <td>Ahmed vs. Kano Electricity</td>
-                                <td>12 Feb 2024</td>
-                                <td>Civil</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                            <tr>
-                                <td class="case-id">KHC-2024-0219</td>
-                                <td>Ibrahim Estate Settlement</td>
-                                <td>08 Feb 2024</td>
-                                <td>Probate</td>
-                                <td><span class="status-badge status-closed">Closed</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                            <tr>
-                                <td class="case-id">KHC-2024-0215</td>
-                                <td>State vs. Multiple Defendants</td>
-                                <td>05 Feb 2024</td>
-                                <td>Criminal</td>
-                                <td><span class="status-badge status-urgent">Urgent</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                            <tr>
-                                <td class="case-id">KHC-2024-0209</td>
-                                <td>Commercial Bank vs. Delta Ltd</td>
-                                <td>01 Feb 2024</td>
-                                <td>Commercial</td>
-                                <td><span class="status-badge status-active">Active</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Login to Your Account</h2>
+                <p>Access your affidavit services dashboard</p>
+            </div>
+            <div class="auth-body">
+                <div class="social-auth">
+                    <button class="social-btn">G</button>
+                    <button class="social-btn">f</button>
+                    <button class="social-btn">in</button>
                 </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        
-                    <!-- Add this to the chart row -->
-                    <div class="small-chart-card">
-                        <div class="chart-header">
-                            <div class="chart-title">Affidavit Types Distribution</div>
-                            <div class="chart-period">Current Year</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="affidavitTypesChart"></canvas>
-                        </div>
-                    </div>
-                    </div>
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">or login with email</div>
+                    <div class="divider-line"></div>
                 </div>
-                <br/>
 
-                <!-- Recent Affidavit Requests -->
-                <div class="case-table-container">
-                    <div class="section-header">
-                        <div class="section-title">Recent Affidavit Requests</div>
-                        <a href="affidavit-management.html" class="view-all">View All Requests</a>
-                    </div>
-                    
-                    <table class="case-table">
-                        <thead>
-                            <tr>
-                                <th>Request ID</th>
-                                <th>Applicant Name</th>
-                                <th>Affidavit Type</th>
-                                <th>Date Requested</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="case-id">AFD-2025-67890</td>
-                                <td>Ahmed Ibrahim</td>
-                                <td>Affidavit of Relationship</td>
-                                <td>26 Feb 2025</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                            <tr>
-                                <td class="case-id">AFD-2025-67889</td>
-                                <td>Fatima Mohammed</td>
-                                <td>Correction of Name</td>
-                                <td>25 Feb 2025</td>
-                                <td><span class="status-badge status-processing">Processing</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                            <tr>
-                                <td class="case-id">AFD-2025-67888</td>
-                                <td>Usman Abdullahi</td>
-                                <td>Declaration of Age</td>
-                                <td>24 Feb 2025</td>
-                                <td><span class="status-badge status-approved">Approved</span></td>
-                                <td><button class="action-button">View</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Modules Section -->
-                <h2 style="color: var(--primary); margin-bottom: 20px;">System Modules</h2>
-                <div class="modules-container">
-                    <div class="module-card" onclick="window.location.href='case-management.html'">
-                        <div class="module-icon" style="background-color: var(--primary);">📁</div>
-                        <div class="module-title">Case Management</div>
-                        <div class="module-desc">
-                            Comprehensive case lifecycle management from filing to disposition. Track history, schedules, and outcomes.
-                        </div>
-                        <div class="module-stats">
-                            <div class="module-stat">
-                                <div class="stat-number">1,248</div>
-                                <div class="stat-label">Active Cases</div>
-                            </div>
-                            <div class="module-stat">
-                                <div class="stat-number">367</div>
-                                <div class="stat-label">This Month</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="module-card">
-                        <div class="module-icon" style="background-color: var(--secondary);">📝</div>
-                        <div class="module-title">E-Filing</div>
-                        <div class="module-desc">
-                            Digital submission system for court documents. Submit, validate, and process legal filings electronically.
-                        </div>
-                        <div class="module-stats">
-                            <div class="module-stat">
-                                <div class="stat-number">5,842</div>
-                                <div class="stat-label">Documents</div>
-                            </div>
-                            <div class="module-stat">
-                                <div class="stat-number">843</div>
-                                <div class="stat-label">This Month</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="module-card">
-                        <div class="module-icon" style="background-color: var(--info);">📄</div>
-                        <div class="module-title">Document Management</div>
-                        <div class="module-desc">
-                            Secure digital repository for all court documents with version control and access permissions.
-                        </div>
-                        <div class="module-stats">
-                            <div class="module-stat">
-                                <div class="stat-number">15,724</div>
-                                <div class="stat-label">Files</div>
-                            </div>
-                            <div class="module-stat">
-                                <div class="stat-number">98.7%</div>
-                                <div class="stat-label">Digitized</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="module-card">
-                        <div class="module-icon" style="background-color: var(--warning);">🔍</div>
-                        <div class="module-title">File Tracking</div>
-                        <div class="module-desc">
-                            Real-time tracking for physical documents and files throughout the court system.
-                        </div>
-                        <div class="module-stats">
-                            <div class="module-stat">
-                                <div class="stat-number">9,254</div>
-                                <div class="stat-label">Tracked</div>
-                            </div>
-                            <div class="module-stat">
-                                <div class="stat-number">342</div>
-                                <div class="stat-label">In Transit</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="module-card">
-                        <div class="module-icon" style="background-color: var(--danger);">📚</div>
-                        <div class="module-title">E-Library</div>
-                        <div class="module-desc">
-                            Digital repository of legal references, precedents, and law reports for research.
-                        </div>
-                        <div class="module-stats">
-                            <div class="module-stat">
-                                <div class="stat-number">12,450</div>
-                                <div class="stat-label">Resources</div>
-                            </div>
-                            <div class="module-stat">
-                                <div class="stat-number">1,285</div>
-                                <div class="stat-label">Precedents</div>
-                            </div>
-                        </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
                     </div>
 
-                    <div class="module-card" onclick="window.location.href='affidavit-management.html'">
-                        <div class="module-icon" style="background-color: var(--success);">📜</div>
-                        <div class="module-title">Affidavit Management</div>
-                        <div class="module-desc">
-                            Comprehensive system for processing affidavit requests, approvals, and digital delivery to citizens.
-                        </div>
-                        <div class="module-stats">
-                            <div class="module-stat">
-                                <div class="stat-number">824</div>
-                                <div class="stat-label">Total Requests</div>
-                            </div>
-                            <div class="module-stat">
-                                <div class="stat-number">46</div>
-                                <div class="stat-label">Pending</div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn-next" style="width: 100%;">Login</button>
+                    </div>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="#" class="auth-link" id="showRegister">Register</a></p>
+                <p><a href="#" class="auth-link">Forgot Password?</a></p>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Charts
-            initCharts();
-            
-            // Initialize Charts Function
-            function initCharts() {
-                // Case Load Bar Chart
-                const caseLoadCtx = document.getElementById('caseLoadChart').getContext('2d');
-                const caseLoadChart = new Chart(caseLoadCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        datasets: [
-                            {
-                                label: 'New Cases',
-                                data: [125, 145, 136, 152, 168, 178, 165, 172, 185, 192, 183, 178],
-                                backgroundColor: 'rgba(26, 60, 110, 0.7)',
-                                borderColor: 'rgba(26, 60, 110, 1)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Resolved Cases',
-                                data: [98, 112, 125, 132, 145, 156, 148, 160, 172, 168, 172, 165],
-                                backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                                borderColor: 'rgba(40, 167, 69, 1)',
-                                borderWidth: 1
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Number of Cases'
-                                }
-                            }
-                        }
-                    }
-                });
-                
-                // Case Distribution Pie Chart
-                const caseDistributionCtx = document.getElementById('caseDistributionChart').getContext('2d');
-                const caseDistributionChart = new Chart(caseDistributionCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Civil', 'Criminal', 'Commercial', 'Probate', 'Administrative', 'Affidavits'],
-                        datasets: [{
-                            data: [42, 28, 15, 8, 7, 10],
-                            backgroundColor: [
-                                'rgba(26, 60, 110, 0.7)',
-                                'rgba(220, 53, 69, 0.7)',
-                                'rgba(40, 167, 69, 0.7)',
-                                'rgba(23, 162, 184, 0.7)',
-                                'rgba(255, 193, 7, 0.7)',
-                                'rgba(153, 102, 255, 0.7)'
-                            ],
-                            borderColor: '#ffffff',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right'
-                            }
-                        }
-                    }
-                });
-                
-                // Document Upload Trends
-                const docUploadCtx = document.getElementById('docUploadChart').getContext('2d');
-                const docUploadChart = new Chart(docUploadCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
-                        datasets: [{
-                            label: 'Uploaded Documents',
-                            data: [843, 925, 1054, 1128, 1232, 1345],
-                            backgroundColor: 'rgba(23, 162, 184, 0.2)',
-                            borderColor: 'rgba(23, 162, 184, 1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-                
-                // Case Resolution Rate
-                const resolutionRateCtx = document.getElementById('resolutionRateChart').getContext('2d');
-                const resolutionRateChart = new Chart(resolutionRateCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Civil', 'Criminal', 'Commercial', 'Probate', 'Admin'],
-                        datasets: [{
-                            label: 'Resolution Rate (%)',
-                            data: [78, 65, 82, 88, 72],
-                            backgroundColor: [
-                                'rgba(26, 60, 110, 0.7)',
-                                'rgba(220, 53, 69, 0.7)',
-                                'rgba(40, 167, 69, 0.7)',
-                                'rgba(23, 162, 184, 0.7)',
-                                'rgba(255, 193, 7, 0.7)'
-                            ],
-                            borderColor: [
-                                'rgba(26, 60, 110, 1)',
-                                'rgba(220, 53, 69, 1)',
-                                'rgba(40, 167, 69, 1)',
-                                'rgba(23, 162, 184, 1)',
-                                'rgba(255, 193, 7, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                title: {
-                                    display: true,
-                                    text: 'Percentage (%)'
-                                }
-                            }
-                        }
-                    }
-                });
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Create a New Account</h2>
+                <p>Register to use our affidavit services</p>
+            </div>
+            <div class="auth-body">
+                <div class="social-auth">
+                    <button class="social-btn">G</button>
+                    <button class="social-btn">f</button>
+                    <button class="social-btn">in</button>
+                </div>
 
-                // Affidavit Types Distribution
-                const affidavitTypesCtx = document.getElementById('affidavitTypesChart').getContext('2d');
-                const affidavitTypesChart = new Chart(affidavitTypesCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Relationship', 'Name Change', 'Age Declaration', 'Document Loss', 'Others'],
-                        datasets: [{
-                            data: [35, 25, 20, 15, 5],
-                            backgroundColor: [
-                                'rgba(40, 167, 69, 0.7)',
-                                'rgba(23, 162, 184, 0.7)',
-                                'rgba(255, 193, 7, 0.7)',
-                                'rgba(153, 102, 255, 0.7)',
-                                'rgba(108, 117, 125, 0.7)'
-                            ],
-                            borderColor: '#ffffff',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: {
-                                    boxWidth: 12,
-                                    font: {
-                                        size: 10
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            
-            // User dropdown functionality
-            const userProfileButton = document.getElementById('user-profile');
-            const userDropdown = document.getElementById('user-dropdown');
-            
-            userProfileButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                userDropdown.classList.toggle('active');
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function() {
-                userDropdown.classList.remove('active');
-            });
-            
-            // Prevent dropdown from closing when clicking inside it
-            userDropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-    </script>
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">or register with email</div>
+                    <div class="divider-line"></div>
+                </div>
+
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Enter your last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn-next" style="width: 100%;">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <p>Already have an account? <a href="#" class="auth-link" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="affidavit-script.js"></script>
 </body>
 </html>
