@@ -11,7 +11,7 @@
         .hero {
             padding: 0;
             position: relative;
-            height: 550px;
+            height: 600px;
             overflow: hidden;
         }
 
@@ -223,7 +223,139 @@
                 font-size: 16px;
             }
         }
-    </style>
+
+        /* Court Leadership Section */
+.leadership-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.leadership-cards {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.leadership-card {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.leadership-image {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.leadership-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.leadership-details {
+    padding: 25px;
+    flex-grow: 1;
+}
+
+.leadership-details h3 {
+    color: var(--primary);
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.leadership-role {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--dark-gray);
+    margin-bottom: 15px;
+}
+
+.leadership-details p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.leadership-contact {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--primary);
+}
+
+.contact-icon {
+    margin-right: 5px;
+}
+
+/* Judges Section */
+.judges-section {
+    padding: 60px 0;
+    background-color: var(--light-gray);
+}
+
+.judges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.judge-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.judge-card:hover {
+    transform: translateY(-5px);
+}
+
+.judge-image {
+    width: 100%;
+    aspect-ratio: 4/5;
+}
+
+.judge-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.judge-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.judge-info h4 {
+    color: var(--primary);
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.judge-division {
+    color: var(--dark-gray);
+    font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .leadership-card {
+        flex-direction: column;
+    }
+    
+    .leadership-image {
+        width: 100%;
+        height: 300px;
+    }
+}
     </style>
 </head>
 <body>
@@ -256,28 +388,28 @@
     <section class="hero">
         <div class="slider-overlay"></div>
         <div class="hero-slider" id="heroSlider">
-            <div class="slider-item active" style="background-image: url('https://placehold.co/1200x500?text=Kano+State+High+Court');">
+            <div class="slider-item active" style="background-image: url('images/cj-gov4.jpg');">
                 <div class="hero-content">
                     <h1>Kano State High Court Affidavit Services</h1>
                     <p>Apply for, manage, and download your affidavit documents online with ease. Our secure digital platform makes the process faster and more convenient.</p>
                     <a href="affidavit-request-form.html" class="cta-btn">Request an Affidavit</a>
                 </div>
             </div>
-            <div class="slider-item" style="background-image: url('https://placehold.co/1200x500?text=Court+Building');">
+            <div class="slider-item" style="background-image: url('images/cj-gov.jpg');">
                 <div class="hero-content">
                     <h1>Modernized Court Services</h1>
                     <p>Experience our digitized court services designed to improve access to justice for all citizens.</p>
                     <a href="affidavit-request-form.html" class="cta-btn">Request an Affidavit</a>
                 </div>
             </div>
-            <div class="slider-item" style="background-image: url('https://placehold.co/1200x500?text=Digital+Services');">
+            <div class="slider-item" style="background-image: url('images/chief-judge2.jpg');">
                 <div class="hero-content">
                     <h1>Fast and Secure Processing</h1>
                     <p>Get your legal documents processed quickly through our secure digital platform with minimal waiting time.</p>
                     <a href="affidavit-request-form.html" class="cta-btn">Request an Affidavit</a>
                 </div>
             </div>
-            <div class="slider-item" style="background-image: url('https://placehold.co/1200x500?text=Court+Building');">
+            <div class="slider-item" style="background-image: url('images/reg.jpg');">
                 <div class="hero-content">
                     <h1>Modernized Court Services</h1>
                     <p>Experience our digitized court services designed to improve access to justice for all citizens.</p>
@@ -292,6 +424,227 @@
             <div class="slider-dot"></div>
         </div>
     </section>
+
+<!-- After the hero section and before the info-section -->
+
+<!-- Court Leadership Section -->
+<section class="leadership-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Court Leadership</h2>
+            <p>The Honorable Judges leading the Kano State Judiciary</p>
+        </div>
+
+        <div class="leadership-cards">
+            <!-- Chief Judge Card -->
+            <div class="leadership-card">
+                <div class="leadership-image">
+                    <img src="images/chief-judge.jpg" alt="Hon. Dije Abdu Aboki" style="height:250px">
+                </div>
+                <div class="leadership-details">
+                    <h3>Hon. Justice Dije Abdu Aboki</h3>
+                    <div class="leadership-role">Chief Judge</div>
+                    <p>Hon. Justice Dije Abdu Aboki was appointed as the Chief Judge of Kano State High Court in 2023. With vast experience in the legal profession, she brings distinguished leadership to the judiciary.</p>
+                    <div class="leadership-contact">
+                        <span><i class="contact-icon">📧</i> chiefjudge@kanojudiciary.gov.ng</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chief Registrar Card -->
+            <div class="leadership-card">
+                <div class="leadership-image">
+                    <img src="images/reg.jpg" alt="Chief Magistrate Hajara Garba Ahmad">
+                </div>
+                <div class="leadership-details">
+                    <h3>Chief Magistrate Hajara Garba Ahmad</h3>
+                    <div class="leadership-role">Chief Registrar</div>
+                    <p>As Chief Registrar, Chief Magistrate Hajara Garba Ahmad oversees the administrative functions of the Kano State High Court. She ensures efficient case management and registry operations.</p>
+                    <div class="leadership-contact">
+                        <span><i class="contact-icon">📧</i> chiefregistrar@kanojudiciary.gov.ng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Judges Section -->
+<section class="judges-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Honorable Judges</h2>
+            <p>Distinguished Judges serving at the Kano State High Court</p>
+        </div>
+
+        <div class="judges-grid">
+            <!-- Judge 1 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/1.png" alt="Hon. Justice Aisha Mahmoud">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Aisha Mahmoud</h4>
+                    <!-- <div class="judge-division">Civil Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 2 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/2.png" alt="Hon. Suleiman Baba Na Malla">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Suleiman Baba Na Malla</h4>
+                    <!-- <div class="judge-division">Criminal Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 3 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/3.png" alt="Hon. Justice R. A. Sadiq">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice R. A. Sadiq</h4>
+                    <!-- <div class="judge-division">Commercial Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 4 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/4.png" alt="Hon. Justice Amina Adamu Aliyu">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Amina Adamu Aliyu</h4>
+                    <!-- <div class="judge-division">Family Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 5 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/5.png" alt="Hon. Justice Ibrahim Musa Karaye">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Ibrahim Musa Karaye</h4>
+                    <!-- <div class="judge-division">Probate Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 6 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/6.png" alt="Hon. Justice Ibrahim Umar">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Ibrahim Umar</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 7 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/7.png" alt="Hon. Justice Hadiza Sulaiman">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Hadiza Sulaiman</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 8 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/8.png" alt="Hon. Justice Aisha Yau">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Aisha Yau</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 9 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/9.png" alt="Hon. Justice Jamilu Shehu Sulaiman">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Jamilu Shehu Sulaiman</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 10 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/10.png" alt="Hon. Justice Zuwaira Yusuf">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Zuwaira Yusuf</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 11 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/11.png" alt="Hon. Justice Nasiru Saminu">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Nasiru Saminu</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 12 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/12.png" alt="Hon. Justice Maryam Ahmad Sabo">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Maryam Ahmad Sabo</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 13 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/13.png" alt="Hon. Justice Sunusi Ado Maaji">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Sunusi Ado Maaji</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 14 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/14.png" alt="Hon. Justice Hafsat Yahaya Sani">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Hafsat Yahaya Sani</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+
+            <!-- Judge 15 -->
+            <div class="judge-card">
+                <div class="judge-image">
+                    <img src="images/15.png" alt="Hon. Justice Abdu Maiwada A.">
+                </div>
+                <div class="judge-info">
+                    <h4>Hon. Justice Abdu Maiwada A.</h4>
+                    <!-- <div class="judge-division">Administrative Division</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
     <!-- Info Section -->
     <section class="info-section">
